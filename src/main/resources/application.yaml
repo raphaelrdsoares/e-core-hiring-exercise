@@ -1,0 +1,10 @@
+server:
+    servlet:
+        contextPath: /api
+    port: 9000
+
+springdoc:
+    api-docs:
+        path: /docs
+    swagger-ui:
+        path: /docs/swagger

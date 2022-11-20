@@ -14,14 +14,26 @@ import org.springframework.web.bind.annotation.RestController;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IServiceRoles;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.ApiError;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/roles")
+@Tag(name = "Roles")
 public class RolesController {
 
     @Autowired
     private IServiceRoles serviceRoles;
 
+    @Operation(summary = "Creates a role", description = "Creates a new role. If the new role is 'default=true', it will replace the existing default role.")
+    @ApiResponse(responseCode = "201", description = "Role created")
+    @ApiResponse(responseCode = "400", description = "The request does not attend the specification.", content = @Content(schema = @Schema(implementation = ApiError.class)))
+    @ApiResponse(responseCode = "409", description = "Conflict with current server state.", content = @Content(schema = @Schema(implementation = ApiError.class)))
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseRoleDto> createRole(@Valid @RequestBody RequestRoleDto requestRole)
             throws Exception {
