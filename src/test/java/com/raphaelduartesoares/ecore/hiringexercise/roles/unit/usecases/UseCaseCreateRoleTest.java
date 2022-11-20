@@ -53,7 +53,7 @@ public class UseCaseCreateRoleTest {
     }
 
     @Test
-    public void shouldInsertRoleIfDoesNotExists() throws DuplicatedEntityException {
+    public void shouldCreateRoleSuccessfullyIfDoesNotExists() throws DuplicatedEntityException {
         ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, false);
         RequestRoleDto request = new RequestRoleDto(roleCode, roleDisplayName);
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.build());
@@ -65,7 +65,7 @@ public class UseCaseCreateRoleTest {
     }
 
     @Test
-    public void shouldValidateIfRoleExistsBeforeInsert() {
+    public void shouldValidateIfRoleExistsBeforeCreate() {
         RequestRoleDto request = new RequestRoleDto(roleCode, roleDisplayName);
         when(repositoryRoles.findByCode(roleCode)).thenReturn(mockEntityBuilder.build());
 
@@ -86,25 +86,38 @@ public class UseCaseCreateRoleTest {
 
     @Test
     public void shouldUpdateExistingDefaultRoleToFalseWhenCreateNewDefaultRole() throws DuplicatedEntityException {
+        boolean isDefault = true;
         EntityRole mockEntityDefault = (EntityRole) mockEntityBuilder.code("deva").isDefault(true)
                 .id(UUID.fromString("c95f5701-a136-55ad-867b-9748db868af8")).build();
         when(repositoryRoles.findDefault()).thenReturn(mockEntityDefault);
         when(repositoryRoles.findByCode(roleCode)).thenReturn(null);
-        when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.isDefault(true).build());
+        when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.isDefault(
+                isDefault).build());
 
-        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName, true));
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName, isDefault));
 
         verify(repositoryRoles, times(1)).findDefault();
-        verify(repositoryRoles, times(1)).save(new EntityRole("deva", roleDisplayName, false));
-        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleDisplayName, true));
+        verify(repositoryRoles, times(1)).save(new EntityRole("deva", roleDisplayName, !isDefault));
+        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleDisplayName, isDefault));
 
-        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, true);
+        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, isDefault);
         assertEquals(mockResponse, response);
     }
 
-    // TODO - testar que, quando é enviado uma role default, as outras roles são
-    // modificadas para não default
+    @Test
+    public void shouldCreateNewNonDefaultRoleSuccessfullyEvenIfThereIsNoDefaultRoleCreated()
+            throws DuplicatedEntityException {
+        boolean isDefault = false;
+        when(repositoryRoles.findDefault()).thenReturn(null);
+        when(repositoryRoles.findByCode(roleCode)).thenReturn(null);
+        when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.build());
 
-    // TODO - testar que não vai dar erro se não houver nenhum default cadastrado e
-    // a nova role não for default também
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName));
+
+        verify(repositoryRoles, times(1)).findDefault();
+        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleDisplayName, isDefault));
+
+        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, isDefault);
+        assertEquals(mockResponse, response);
+    }
 }

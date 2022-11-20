@@ -35,6 +35,9 @@ public class Role {
     }
 
     public static Role fromEntity(EntityRole entity) {
+        if (entity == null) {
+            return null;
+        }
         return Role.builder()
                 .id(entity.id.toString())
                 .code(entity.code)
