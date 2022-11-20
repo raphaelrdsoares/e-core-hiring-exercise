@@ -1,7 +1,5 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces;
 
-import java.util.List;
-
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityRole;
 
 public interface IRepositoryRoles {

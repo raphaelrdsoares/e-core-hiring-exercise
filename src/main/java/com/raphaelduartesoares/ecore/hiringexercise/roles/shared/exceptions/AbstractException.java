@@ -1,4 +1,4 @@
-package com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.exceptions;
+package com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions;
 
 import java.util.ArrayList;
 import java.util.Arrays;

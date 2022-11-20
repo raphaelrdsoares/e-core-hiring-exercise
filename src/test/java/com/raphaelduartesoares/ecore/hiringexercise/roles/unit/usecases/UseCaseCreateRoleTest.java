@@ -7,7 +7,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,13 +16,12 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.exceptions.DuplicatedEntityException;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityRole;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IRepositoryRoles;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.usecases.UseCaseCreateRole;
-import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.infrastructure.repository.BaseEntity;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.DuplicatedEntityException;
 
 public class UseCaseCreateRoleTest {
 
@@ -54,19 +52,18 @@ public class UseCaseCreateRoleTest {
 
     @Test
     public void shouldCreateRoleSuccessfullyIfDoesNotExists() throws DuplicatedEntityException {
-        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, false);
-        RequestRoleDto request = new RequestRoleDto(roleCode, roleDisplayName);
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.build());
-
-        ResponseRoleDto response = useCase.createRole(request);
-
+        
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName));
+        
         verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleDisplayName, false));
+        
+        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, false);
         assertEquals(mockResponse, response);
     }
 
     @Test
     public void shouldValidateIfRoleExistsBeforeCreate() {
-        RequestRoleDto request = new RequestRoleDto(roleCode, roleDisplayName);
         when(repositoryRoles.findByCode(roleCode)).thenReturn(mockEntityBuilder.build());
 
         DuplicatedEntityException exception = assertThrows(
@@ -74,7 +71,7 @@ public class UseCaseCreateRoleTest {
                 new Executable() {
                     @Override
                     public void execute() throws Exception {
-                        useCase.createRole(request);
+                        useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName));
 
                     }
                 });

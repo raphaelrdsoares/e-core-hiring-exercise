@@ -1,8 +1,10 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class RequestRoleDto {
 
     public String code;
