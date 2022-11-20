@@ -1,6 +1,5 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain;
 
-import java.util.UUID;
 import lombok.Builder;
 import lombok.Data;
 
@@ -8,6 +7,6 @@ import lombok.Data;
 @Builder
 public class User {
 
-  private UUID id;
-  private String name;
+    private String id;
+    private String name;
 }

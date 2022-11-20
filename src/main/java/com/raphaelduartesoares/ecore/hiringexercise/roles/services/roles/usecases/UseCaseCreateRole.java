@@ -1,5 +1,7 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.usecases;
 
+import java.util.Optional;
+
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.Role;
@@ -45,16 +47,16 @@ public class UseCaseCreateRole {
     }
 
     private void updateExistingDefaultRoleToNonDefault() throws RepositoryException {
-        Role defaultRole = Role.fromEntity(repositoryRoles.findDefault());
-        if (defaultRole != null) {
-            defaultRole.setNonDefault();
-            repositoryRoles.save(defaultRole.toEntity());
+        Optional<Role> defaultRole = Role.fromEntity(repositoryRoles.findDefault());
+        if (defaultRole.isPresent()) {
+            defaultRole.get().setNonDefault();
+            repositoryRoles.save(defaultRole.get().toEntity());
         }
     }
 
     private void saveRole(Role role) throws RepositoryException {
         EntityRole savedEntity = repositoryRoles.save(role.toEntity());
-        role = Role.fromEntity(savedEntity);
+        role = Role.fromEntity(savedEntity).get();
     }
 
 }

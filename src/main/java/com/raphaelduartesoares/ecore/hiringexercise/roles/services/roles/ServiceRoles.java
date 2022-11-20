@@ -32,7 +32,7 @@ public class ServiceRoles implements IServiceRoles {
         // TODO - Verificar se a role existe
         // TODO - Verificar se o usuário existe
         // TODO - Verificar se o time existe
-        // TODO - Verificar se o usuário está dentro do time existe
+        // TODO - Verificar se o usuário está dentro do time
         // TODO Auto-generated method stub
 
     }

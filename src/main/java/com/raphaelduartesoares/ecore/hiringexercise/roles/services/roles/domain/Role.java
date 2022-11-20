@@ -1,5 +1,6 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestRoleDto;
@@ -26,26 +27,6 @@ public class Role {
         this.isDefault = false;
     }
 
-    public static Role fromDto(RequestRoleDto requestRoleDto) {
-        return Role.builder()
-                .code(requestRoleDto.code)
-                .name(requestRoleDto.name)
-                .isDefault(requestRoleDto.isDefault)
-                .build();
-    }
-
-    public static Role fromEntity(EntityRole entity) {
-        if (entity == null) {
-            return null;
-        }
-        return Role.builder()
-                .id(entity.id.toString())
-                .code(entity.code)
-                .name(entity.name)
-                .isDefault(entity.isDefault)
-                .build();
-    }
-
     public ResponseRoleDto toDto() {
         return new ResponseRoleDto(code, name, isDefault);
     }
@@ -56,6 +37,27 @@ public class Role {
             entity.id = UUID.fromString(this.id);
         }
         return entity;
+    }
+
+    public static Role fromDto(RequestRoleDto requestRoleDto) {
+        return Role.builder()
+                .code(requestRoleDto.code)
+                .name(requestRoleDto.name)
+                .isDefault(requestRoleDto.isDefault)
+                .build();
+    }
+
+    public static Optional<Role> fromEntity(EntityRole entity) {
+        if (entity == null) {
+            return Optional.empty();
+        }
+        return Optional.of(
+                Role.builder()
+                        .id(entity.id.toString())
+                        .code(entity.code)
+                        .name(entity.name)
+                        .isDefault(entity.isDefault)
+                        .build());
     }
 
 }
