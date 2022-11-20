@@ -3,15 +3,16 @@ package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infras
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.infrastructure.repository.BaseEntity;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
-@Builder
+@NoArgsConstructor
+@SuperBuilder()
 public class EntityRole extends BaseEntity {
     public String code;
     public String name;
     public boolean isDefault;
-
 }

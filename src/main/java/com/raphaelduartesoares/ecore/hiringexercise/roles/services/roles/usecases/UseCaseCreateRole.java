@@ -21,7 +21,9 @@ public class UseCaseCreateRole {
 
         checkIfRoleAlreadyExists(role);
 
-        repositoryRoles.save(role.toEntity());
+        updatesExistentRolesToNonDefaultIfNewRoleIsDefault(role);
+
+        saveRole(role);
 
         return role.toDto();
     }
@@ -33,4 +35,18 @@ public class UseCaseCreateRole {
                     "Already exists a role with code '%s'", role.getCode()));
         }
     }
+
+    private void updatesExistentRolesToNonDefaultIfNewRoleIsDefault(Role role) {
+        Role defaultRole = Role.fromEntity(repositoryRoles.findDefault());
+        if (defaultRole != null) {
+            defaultRole.setNonDefault();
+            repositoryRoles.save(defaultRole.toEntity());
+        }
+    }
+
+    private void saveRole(Role role) {
+        EntityRole savedEntity = repositoryRoles.save(role.toEntity());
+        role = Role.fromEntity(savedEntity);
+    }
+
 }

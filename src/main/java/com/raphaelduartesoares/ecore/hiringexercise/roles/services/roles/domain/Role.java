@@ -1,5 +1,7 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain;
 
+import java.util.UUID;
+
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityRole;
@@ -15,13 +17,30 @@ import lombok.ToString;
 @EqualsAndHashCode
 public class Role {
 
+    private String id;
     private String code;
     private String name;
     private boolean isDefault;
 
+    public void setNonDefault() {
+        this.isDefault = false;
+    }
+
     public static Role fromDto(RequestRoleDto requestRoleDto) {
-        return Role.builder().code(requestRoleDto.code).name(requestRoleDto.displayName)
-                .isDefault(requestRoleDto.isDefault).build();
+        return Role.builder()
+                .code(requestRoleDto.code)
+                .name(requestRoleDto.displayName)
+                .isDefault(requestRoleDto.isDefault)
+                .build();
+    }
+
+    public static Role fromEntity(EntityRole entity) {
+        return Role.builder()
+                .id(entity.id.toString())
+                .code(entity.code)
+                .name(entity.name)
+                .isDefault(entity.isDefault)
+                .build();
     }
 
     public ResponseRoleDto toDto() {
@@ -29,7 +48,11 @@ public class Role {
     }
 
     public EntityRole toEntity() {
-        return new EntityRole(code, name, isDefault);
+        EntityRole entity = new EntityRole(code, name, isDefault);
+        if (this.id != null) {
+            entity.id = UUID.fromString(this.id);
+        }
+        return entity;
     }
 
 }
