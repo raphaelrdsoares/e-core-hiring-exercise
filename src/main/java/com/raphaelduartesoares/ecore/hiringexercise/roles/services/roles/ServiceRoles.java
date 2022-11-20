@@ -13,6 +13,7 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfa
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IServiceRoles;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.usecases.UseCaseCreateRole;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.DuplicatedEntityException;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 @Component
 public class ServiceRoles implements IServiceRoles {
@@ -21,7 +22,7 @@ public class ServiceRoles implements IServiceRoles {
     private IRepositoryRoles repositoryRoles;
 
     @Override
-    public ResponseRoleDto createRole(RequestRoleDto roleDto) throws DuplicatedEntityException {
+    public ResponseRoleDto createRole(RequestRoleDto roleDto) throws DuplicatedEntityException, RepositoryException {
         return new UseCaseCreateRole(repositoryRoles).createRole(roleDto);
     }
 

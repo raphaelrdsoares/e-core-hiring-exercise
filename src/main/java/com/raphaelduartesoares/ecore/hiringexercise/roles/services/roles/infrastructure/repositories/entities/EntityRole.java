@@ -5,12 +5,14 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.infrastructure.
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import lombok.experimental.SuperBuilder;
 
 @EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder()
+@ToString(callSuper = true)
 public class EntityRole extends BaseEntity {
     public String code;
     public String name;

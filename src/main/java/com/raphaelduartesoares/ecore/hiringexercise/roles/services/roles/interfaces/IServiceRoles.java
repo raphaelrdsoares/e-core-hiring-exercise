@@ -5,11 +5,12 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.Re
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseTeamDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseUserDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.DuplicatedEntityException;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 import java.util.List;
 
 public interface IServiceRoles {
-    public ResponseRoleDto createRole(RequestRoleDto roleDto) throws DuplicatedEntityException;
+    public ResponseRoleDto createRole(RequestRoleDto roleDto) throws DuplicatedEntityException, RepositoryException;
 
     public void assignRole(String roleCode, String teamId, String userId);
 
