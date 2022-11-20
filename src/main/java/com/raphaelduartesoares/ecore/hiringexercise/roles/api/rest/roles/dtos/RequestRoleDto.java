@@ -1,5 +1,7 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos;
 
+import javax.validation.constraints.NotBlank;
+
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -7,12 +9,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestRoleDto {
 
+    @NotBlank(message = "Role.code is required")
     public String code;
-    public String displayName;
+    @NotBlank(message = "Role.code is required")
+    public String name;
     public boolean isDefault;
 
-    public RequestRoleDto(String code, String displayName) {
+    public RequestRoleDto(String code, String name) {
         this.code = code;
-        this.displayName = displayName;
+        this.name = name;
     }
 }

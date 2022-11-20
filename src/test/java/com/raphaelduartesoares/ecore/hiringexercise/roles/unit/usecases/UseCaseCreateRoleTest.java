@@ -31,7 +31,7 @@ public class UseCaseCreateRoleTest {
     private UseCaseCreateRole useCase;
 
     private String roleCode = "dev";
-    private String roleDisplayName = "Developer";
+    private String roleName = "Developer";
     private String uuid = "dc82bf91-d3a1-5afc-8b66-3959ae896f05";
     private EntityRole.EntityRoleBuilder mockEntityBuilder;
 
@@ -43,7 +43,7 @@ public class UseCaseCreateRoleTest {
 
         mockEntityBuilder = EntityRole.builder()
                 .code(roleCode)
-                .name(roleDisplayName)
+                .name(roleName)
                 .isDefault(false)
                 .id(UUID.fromString(uuid))
                 .createdAt(LocalDateTime.now())
@@ -54,11 +54,11 @@ public class UseCaseCreateRoleTest {
     public void shouldCreateRoleSuccessfullyIfDoesNotExists() throws Exception {
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.build());
         
-        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName));
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName));
         
-        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleDisplayName, false));
+        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleName, false));
         
-        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, false);
+        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleName, false);
         assertEquals(mockResponse, response);
     }
 
@@ -71,7 +71,7 @@ public class UseCaseCreateRoleTest {
                 new Executable() {
                     @Override
                     public void execute() throws Exception {
-                        useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName));
+                        useCase.createRole(new RequestRoleDto(roleCode, roleName));
 
                     }
                 });
@@ -91,13 +91,13 @@ public class UseCaseCreateRoleTest {
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.isDefault(
                 isDefault).build());
 
-        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName, isDefault));
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName, isDefault));
 
         verify(repositoryRoles, times(1)).findDefault();
-        verify(repositoryRoles, times(1)).save(new EntityRole("deva", roleDisplayName, !isDefault));
-        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleDisplayName, isDefault));
+        verify(repositoryRoles, times(1)).save(new EntityRole("deva", roleName, !isDefault));
+        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleName, isDefault));
 
-        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, isDefault);
+        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleName, isDefault);
         assertEquals(mockResponse, response);
     }
 
@@ -111,12 +111,12 @@ public class UseCaseCreateRoleTest {
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.isDefault(
                 isDefault).build());
 
-        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName, isDefault));
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName, isDefault));
 
         verify(repositoryRoles, times(0)).findDefault();
         verify(repositoryRoles, times(1)).save(Mockito.any(EntityRole.class));
 
-        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, isDefault);
+        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleName, isDefault);
         assertEquals(mockResponse, response);
     }
 
@@ -127,12 +127,12 @@ public class UseCaseCreateRoleTest {
         when(repositoryRoles.findByCode(roleCode)).thenReturn(null);
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.build());
 
-        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleDisplayName));
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName));
 
         verify(repositoryRoles, times(1)).findDefault();
-        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleDisplayName, isDefault));
+        verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleName, isDefault));
 
-        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleDisplayName, isDefault);
+        ResponseRoleDto mockResponse = new ResponseRoleDto(roleCode, roleName, isDefault);
         assertEquals(mockResponse, response);
     }
 }

@@ -29,7 +29,7 @@ public class Role {
     public static Role fromDto(RequestRoleDto requestRoleDto) {
         return Role.builder()
                 .code(requestRoleDto.code)
-                .name(requestRoleDto.displayName)
+                .name(requestRoleDto.name)
                 .isDefault(requestRoleDto.isDefault)
                 .build();
     }

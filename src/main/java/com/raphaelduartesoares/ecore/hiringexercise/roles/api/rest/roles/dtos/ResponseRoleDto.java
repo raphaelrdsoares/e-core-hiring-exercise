@@ -8,6 +8,6 @@ import lombok.EqualsAndHashCode;
 public class ResponseRoleDto {
 
     public String code;
-    public String displayName;
+    public String name;
     public boolean isDefault;
 }
