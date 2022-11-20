@@ -6,6 +6,7 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityRole;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IRepositoryRoles;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.DuplicatedEntityException;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 public class UseCaseCreateRole {
 
@@ -15,7 +16,8 @@ public class UseCaseCreateRole {
         this.repositoryRoles = repositoryRoles;
     }
 
-    public ResponseRoleDto createRole(RequestRoleDto requestRoleDto) throws DuplicatedEntityException {
+    public ResponseRoleDto createRole(RequestRoleDto requestRoleDto)
+            throws DuplicatedEntityException, RepositoryException {
 
         Role role = Role.fromDto(requestRoleDto);
 
@@ -36,7 +38,13 @@ public class UseCaseCreateRole {
         }
     }
 
-    private void updatesExistentRolesToNonDefaultIfNewRoleIsDefault(Role role) {
+    private void updatesExistentRolesToNonDefaultIfNewRoleIsDefault(Role role) throws RepositoryException {
+        if (role.isDefault()) {
+            updateExistingDefaultRoleToNonDefault();
+        }
+    }
+
+    private void updateExistingDefaultRoleToNonDefault() throws RepositoryException {
         Role defaultRole = Role.fromEntity(repositoryRoles.findDefault());
         if (defaultRole != null) {
             defaultRole.setNonDefault();
@@ -44,7 +52,7 @@ public class UseCaseCreateRole {
         }
     }
 
-    private void saveRole(Role role) {
+    private void saveRole(Role role) throws RepositoryException {
         EntityRole savedEntity = repositoryRoles.save(role.toEntity());
         role = Role.fromEntity(savedEntity);
     }

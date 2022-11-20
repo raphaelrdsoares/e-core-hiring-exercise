@@ -3,6 +3,7 @@ package com.raphaelduartesoares.ecore.hiringexercise.roles.services.seed.usecase
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IServiceRoles;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.DuplicatedEntityException;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 public class UseCaseSeedRoles {
     private IServiceRoles serviceRoles;
@@ -20,21 +21,21 @@ public class UseCaseSeedRoles {
     private void seedTesterRole() {
         try {
             serviceRoles.createRole(new RequestRoleDto("po", "Product Owner"));
-        } catch (DuplicatedEntityException e) {
+        } catch (DuplicatedEntityException | RepositoryException e) {
         }
     }
 
     private void seedProductOwnerRole() {
         try {
             serviceRoles.createRole(new RequestRoleDto("qa", "Tester"));
-        } catch (DuplicatedEntityException e) {
+        } catch (DuplicatedEntityException | RepositoryException e) {
         }
     }
 
     private void seedDeveloperRole() {
         try {
             serviceRoles.createRole(new RequestRoleDto("dev", "Developer", true));
-        } catch (DuplicatedEntityException e) {
+        } catch (DuplicatedEntityException | RepositoryException e) {
         }
     }
 }
