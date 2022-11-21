@@ -33,8 +33,8 @@ public class UseCaseCreateRole {
     }
 
     private void checkIfRoleAlreadyExists(Role role) throws DuplicatedEntityException {
-        EntityRole existentEntity = repositoryRoles.findByCode(role.getCode());
-        if (existentEntity != null) {
+        Optional<EntityRole> existentEntity = repositoryRoles.findByCode(role.getCode());
+        if (existentEntity.isPresent()) {
             throw new DuplicatedEntityException("Role already exists", String.format(
                     "Already exists a role with code '%s'", role.getCode()));
         }
@@ -56,7 +56,7 @@ public class UseCaseCreateRole {
 
     private void saveRole(Role role) throws RepositoryException {
         EntityRole savedEntity = repositoryRoles.save(role.toEntity());
-        role = Role.fromEntity(savedEntity).get();
+        role = Role.fromEntity(Optional.of(savedEntity)).get();
     }
 
 }

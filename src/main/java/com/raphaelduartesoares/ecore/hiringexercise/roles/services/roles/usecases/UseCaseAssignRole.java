@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestAssignRoleDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.Role;
-import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.RoleMembership;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.Membership;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.Team;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityMembership;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IIntegrationMicroserviceTeams;
@@ -12,6 +12,7 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfa
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IRepositoryRoles;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.InternalOperationNotAllowedException;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.NotFoundException;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 public class UseCaseAssignRole {
 
@@ -27,68 +28,73 @@ public class UseCaseAssignRole {
     }
 
     public void assignRole(RequestAssignRoleDto requestDto)
-            throws NotFoundException, InternalOperationNotAllowedException {
-        RoleMembership roleMembership = RoleMembership.fromDto(requestDto);
+            throws NotFoundException, InternalOperationNotAllowedException, RepositoryException {
+        Membership membership = Membership.fromDto(requestDto);
 
-        if (roleMembership.getRoleCode() == null) {
-            assignDefaultRoleToMembership(roleMembership);
+        if (membership.isRoleCodeNullOrEmpty()) {
+            assignDefaultRoleToMembership(membership);
         } else {
-            checkIfRoleExistsByCode(roleMembership);
+            checkIfRoleExistsByCode(membership);
         }
 
-        checkIfTeamExistsAndUserExistsInTeam(roleMembership);
+        checkIfTeamExistsAndUserExistsInTeam(membership);
 
-        saveMembership(roleMembership);
+        saveMembership(membership);
     }
 
-    private void assignDefaultRoleToMembership(RoleMembership roleMembership)
+    private void assignDefaultRoleToMembership(Membership membership)
             throws NotFoundException, InternalOperationNotAllowedException {
         Optional<Role> defaultExistingRole = Role.fromEntity(repositoryRoles.findDefault());
         if (defaultExistingRole.isEmpty()) {
             throw new NotFoundException("Entity not found", "Default role does not exists");
         }
-        roleMembership.setRoleCode(defaultExistingRole.get().getCode());
+        membership.setRoleCode(defaultExistingRole.get().getCode());
     }
 
-    private void checkIfRoleExistsByCode(RoleMembership roleMembership) throws NotFoundException {
-        Optional<Role> existingRole = Role.fromEntity(repositoryRoles.findByCode(roleMembership.getRoleCode()));
+    private void checkIfRoleExistsByCode(Membership membership) throws NotFoundException {
+        Optional<Role> existingRole = Role.fromEntity(repositoryRoles.findByCode(membership.getRoleCode()));
         if (existingRole.isEmpty()) {
             throw new NotFoundException("Entity not found",
-                    String.format("There is no role with code '%s'", roleMembership.getRoleCode()));
+                    String.format("There is no role with code '%s'", membership.getRoleCode()));
         }
     }
 
-    private void checkIfTeamExistsAndUserExistsInTeam(RoleMembership roleMembership) throws NotFoundException {
-        Optional<Team> team = Team.fromDto(microserviceTeams.getTeamById(roleMembership.getTeamId()));
-        checkIfTeamExists(roleMembership, team);
-        checkIfUserExistsInTeam(roleMembership, team);
+    private void checkIfTeamExistsAndUserExistsInTeam(Membership membership) throws NotFoundException {
+        Optional<Team> team = Team.fromDto(microserviceTeams.getTeamById(membership.getTeamId()));
+        checkIfTeamExists(membership, team);
+        checkIfUserExistsInTeam(membership, team.get());
     }
 
-    private void checkIfTeamExists(RoleMembership roleMembership, Optional<Team> team) throws NotFoundException {
+    private void checkIfTeamExists(Membership membership, Optional<Team> team) throws NotFoundException {
         if (team.isEmpty()) {
             throw new NotFoundException("Entity not found",
-                    String.format("There is no team with id '%s'", roleMembership.getTeamId()));
+                    String.format("There is no team with id '%s'", membership.getTeamId()));
         }
     }
 
-    private void checkIfUserExistsInTeam(RoleMembership roleMembership, Optional<Team> team) throws NotFoundException {
-        boolean userExistsInTeam = team.get().getTeamMemberIds().stream()
-                .anyMatch(id -> id.equals(roleMembership.getUserId()));
-        if (!userExistsInTeam) {
+    private void checkIfUserExistsInTeam(Membership membership, Team team) throws NotFoundException {
+        boolean userExistsInTeamMembers = team.getTeamMemberIds().stream()
+                .anyMatch(id -> id.equals(membership.getUserId()));
+        boolean isUserTeamLead = membership.getUserId().equals(team.getTeamLeadId());
+
+        if (!userExistsInTeamMembers && !isUserTeamLead) {
             throw new NotFoundException("Entity not found",
-                    String.format("There is no user '%s' in team '%s'", roleMembership.getUserId(),
-                            roleMembership.getTeamId()));
+                    String.format("There is no user '%s' in team '%s'", membership.getUserId(),
+                            membership.getTeamId()));
 
         }
     }
 
-    private void saveMembership(RoleMembership roleMembership) {
-        Optional<EntityMembership> existingMembership = repositoryMembership.findByRoleAndTeamAndUse(
-                roleMembership.getRoleCode(), roleMembership.getTeamId(), roleMembership.getUserId());
-        if (existingMembership.isEmpty()) {
-            EntityMembership entity = roleMembership.toEntity();
-            repositoryMembership.save(entity);
+    private void saveMembership(Membership membership)
+            throws RepositoryException, InternalOperationNotAllowedException {
+        Optional<Membership> existingMembership = Membership.fromEntity(repositoryMembership.findByTeamAndUser(
+                membership.getTeamId(), membership.getUserId()));
+        if (existingMembership.isPresent()) {
+            existingMembership.get().setRoleCode(membership.getRoleCode());
+            membership = existingMembership.get();
         }
+        EntityMembership entity = membership.toEntity();
+        repositoryMembership.save(entity);
     }
 
 }
