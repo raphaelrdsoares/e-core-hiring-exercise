@@ -6,6 +6,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.UUID;
@@ -47,8 +48,8 @@ public class UseCaseCreateRoleTest {
                 .name(roleName)
                 .isDefault(false)
                 .id(UUID.fromString(uuid))
-                .createdAt(LocalDateTime.now())
-                .updatedAt(LocalDateTime.now());
+                .createdAt(Timestamp.valueOf(LocalDateTime.now()))
+                .updatedAt(Timestamp.valueOf(LocalDateTime.now()));
     }
 
     @Test

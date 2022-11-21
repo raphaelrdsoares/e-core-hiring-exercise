@@ -1,11 +1,16 @@
+
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.OptionalInt;
 import java.util.UUID;
 import java.util.stream.IntStream;
+
+import javax.annotation.PostConstruct;
 
 import org.springframework.stereotype.Component;
 
@@ -14,7 +19,7 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfa
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 @Component
-public class RepositoryRole implements IRepositoryRoles {
+public class RepositoryRole extends RepositoryBase<EntityRole> implements IRepositoryRoles {
 
     List<EntityRole> entities = new ArrayList<>();
 
@@ -25,7 +30,7 @@ public class RepositoryRole implements IRepositoryRoles {
         } else {
             updateEntity(entity);
         }
-        printDatabase();
+        persistEntitiesInFile();
         return entity;
     }
 
@@ -49,6 +54,8 @@ public class RepositoryRole implements IRepositoryRoles {
 
     private void insertEntity(EntityRole entity) {
         entity.id = UUID.randomUUID();
+        entity.createdAt = Timestamp.valueOf(LocalDateTime.now());
+        entity.updatedAt = Timestamp.valueOf(LocalDateTime.now());
         entities.add(entity);
     }
 
@@ -61,13 +68,24 @@ public class RepositoryRole implements IRepositoryRoles {
         if (existingRole.isEmpty()) {
             throw new RepositoryException("Error updating entity", "entity id not found");
         }
+        entity.updatedAt = Timestamp.valueOf(LocalDateTime.now());
         int index = existingRole.getAsInt();
         entities.set(index, entity);
     }
 
-    private void printDatabase() {
-        System.out.println("Roles Database:");
-        System.out.println(entities);
+    @PostConstruct
+    private void loadEntities() throws RepositoryException {
+        entities = loadEntitiesFromFile(EntityRole[].class);
+    }
+
+    @Override
+    String getDatabaseFilePath() {
+        return "database/roles.json";
+    }
+
+    @Override
+    List<EntityRole> getEntities() {
+        return entities;
     }
 
 }
