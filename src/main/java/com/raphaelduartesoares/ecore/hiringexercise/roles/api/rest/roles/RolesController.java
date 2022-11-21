@@ -41,7 +41,7 @@ public class RolesController {
         return new ResponseEntity<ResponseRoleDto>(response, HttpStatus.CREATED);
     }
 
-    @Operation(summary = "Creates a membership", description = "Assigns a role to an user in a team.")
+    @Operation(summary = "Creates a membership", description = "Assigns a role to an user in a team. If no role code is passed, assigns role default or throw 404:NOT_FOUND if there is no default role.")
     @ApiResponse(responseCode = "201", description = "Membership created.")
     @ApiResponse(responseCode = "400", description = "The request does not attend the specification.", content = @Content(schema = @Schema(implementation = ApiError.class)))
     @ApiResponse(responseCode = "404", description = "Entity not found.", content = @Content(schema = @Schema(implementation = ApiError.class)))

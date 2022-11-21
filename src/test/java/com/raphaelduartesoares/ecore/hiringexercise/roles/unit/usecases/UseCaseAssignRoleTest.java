@@ -22,7 +22,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
 public class UseCaseAssignRoleTest {
@@ -42,7 +41,7 @@ public class UseCaseAssignRoleTest {
     private String userId = "f6341d2e-9f9e-5c64-8467-fb092d20a36e";
     private String teamLeadId = "bc81f10f-60f2-5a2c-a838-4ff28914171b";
     private String teamId = "251b0d8a-0a27-5c35-a9c4-7287c8911ad5";
-    private EntityRole mockEntityRole = EntityRole
+    private EntityRole mockEntityRoleDev = EntityRole
             .builder()
             .code(roleCodeDev)
             .name("Developer")
@@ -104,7 +103,7 @@ public class UseCaseAssignRoleTest {
 
   @Test
   public void shouldThrowExceptionWhenTeamDoesNotExists() {
-    when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRole));
+    when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRoleDev));
     when(microserviceTeams.getTeamById(teamId)).thenReturn(null);
 
     NotFoundException exception = assertThrows(
@@ -130,7 +129,7 @@ public class UseCaseAssignRoleTest {
     @Test
     public void shouldThrowExceptionWhenUserDoesNotExistsInTeam() {
         mockTeamDto.teamMemberIds.set(2, "f8778885-9c1e-5d01-a5f6-9b9f4254e3e1");
-        when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRole));
+        when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRoleDev));
         when(microserviceTeams.getTeamById(teamId)).thenReturn(mockTeamDto);
 
         NotFoundException exception = assertThrows(
@@ -152,7 +151,7 @@ public class UseCaseAssignRoleTest {
 
   @Test
   public void shouldAssignRoleSuccessfully() throws Exception {
-    when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRole));
+    when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRoleDev));
     when(microserviceTeams.getTeamById(teamId)).thenReturn(mockTeamDto);
 
     useCase.assignRole(new RequestAssignRoleDto(roleCodeDev, userId, teamId));
@@ -162,7 +161,7 @@ public class UseCaseAssignRoleTest {
 
   @Test
   public void shouldAssignDefaultRoleSuccessfullyWhenNoRoleCodeIsPassed() throws Exception {
-    when(repositoryRoles.findDefault()).thenReturn(Optional.of(mockEntityRole));
+    when(repositoryRoles.findDefault()).thenReturn(Optional.of(mockEntityRoleDev));
     when(microserviceTeams.getTeamById(teamId)).thenReturn(mockTeamDto);
 
     useCase.assignRole(new RequestAssignRoleDto(null, userId, teamId));
@@ -193,7 +192,7 @@ public class UseCaseAssignRoleTest {
 
     @Test
     public void shouldUpdateMembershipIfAlreadyExists() throws Exception {
-        when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRole));
+        when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRoleDev));
         when(microserviceTeams.getTeamById(teamId)).thenReturn(mockTeamDto);
         when(repositoryMembership.findByTeamAndUser(teamId, userId)).thenReturn(Optional.of(mockEntityMembership));
 
@@ -206,7 +205,7 @@ public class UseCaseAssignRoleTest {
 
     @Test
   public void shouldAssignRoleToTeamLeadSuccessfully() throws Exception {
-    when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRole));
+    when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRoleDev));
     when(microserviceTeams.getTeamById(teamId)).thenReturn(mockTeamDto);
 
     useCase.assignRole(new RequestAssignRoleDto(roleCodeDev, teamLeadId, teamId));

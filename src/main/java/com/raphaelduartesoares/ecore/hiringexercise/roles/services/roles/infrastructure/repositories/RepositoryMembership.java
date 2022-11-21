@@ -40,6 +40,13 @@ public class RepositoryMembership implements IRepositoryMembership {
         return Optional.empty();
     }
 
+    @Override
+    public List<EntityMembership> findAllByRoleAndOrTeamIdAndOrUserId(String roleCodeDev, String teamId,
+            String userId) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     private void insertEntity(EntityMembership entity) {
         entity.id = UUID.randomUUID();
         entities.add(entity);

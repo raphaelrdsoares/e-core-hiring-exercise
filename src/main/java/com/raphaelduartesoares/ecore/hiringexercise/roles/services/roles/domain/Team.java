@@ -33,4 +33,8 @@ public class Team {
                         .teamMemberIds(teamDto.teamMemberIds)
                         .build());
     }
+
+    public boolean userExistsInTeam(String userId) {
+        return teamMemberIds.stream().anyMatch(id -> id.equals(userId)) || teamLeadId.equals(userId);
+    }
 }

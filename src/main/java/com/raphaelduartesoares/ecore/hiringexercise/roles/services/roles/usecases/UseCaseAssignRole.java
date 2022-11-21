@@ -60,24 +60,21 @@ public class UseCaseAssignRole {
     }
 
     private void checkIfTeamExistsAndUserExistsInTeam(Membership membership) throws NotFoundException {
-        Optional<Team> team = Team.fromDto(microserviceTeams.getTeamById(membership.getTeamId()));
-        checkIfTeamExists(membership, team);
-        checkIfUserExistsInTeam(membership, team.get());
+        Team team = findTeamByIdOrThrow(membership);
+        checkIfUserExistsInTeam(membership, team);
     }
 
-    private void checkIfTeamExists(Membership membership, Optional<Team> team) throws NotFoundException {
+    private Team findTeamByIdOrThrow(Membership membership) throws NotFoundException {
+        Optional<Team> team = Team.fromDto(microserviceTeams.getTeamById(membership.getTeamId()));
         if (team.isEmpty()) {
             throw new NotFoundException("Entity not found",
                     String.format("There is no team with id '%s'", membership.getTeamId()));
         }
+        return team.get();
     }
 
     private void checkIfUserExistsInTeam(Membership membership, Team team) throws NotFoundException {
-        boolean userExistsInTeamMembers = team.getTeamMemberIds().stream()
-                .anyMatch(id -> id.equals(membership.getUserId()));
-        boolean isUserTeamLead = membership.getUserId().equals(team.getTeamLeadId());
-
-        if (!userExistsInTeamMembers && !isUserTeamLead) {
+        if (!team.userExistsInTeam(membership.getUserId())) {
             throw new NotFoundException("Entity not found",
                     String.format("There is no user '%s' in team '%s'", membership.getUserId(),
                             membership.getTeamId()));

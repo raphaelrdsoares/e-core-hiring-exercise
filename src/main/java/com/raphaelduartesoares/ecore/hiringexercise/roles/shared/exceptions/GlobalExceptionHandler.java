@@ -42,6 +42,11 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex.errors);
     }
 
+    @ExceptionHandler(InvalidInputDataException.class)
+    public ResponseEntity<Object> handleInvalidInputDataException(InvalidInputDataException ex, WebRequest request) {
+        return buildResponseEntity(HttpStatus.UNPROCESSABLE_ENTITY, ex.getMessage(), ex.errors);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {

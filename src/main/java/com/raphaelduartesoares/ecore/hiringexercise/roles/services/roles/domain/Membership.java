@@ -1,9 +1,11 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestAssignRoleDto;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseMembershipDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityMembership;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.InternalOperationNotAllowedException;
 
@@ -51,6 +53,10 @@ public class Membership {
         return roleCode == null || roleCode.isBlank();
     }
 
+    public ResponseMembershipDto toDto() {
+        return new ResponseMembershipDto(roleCode, userId, teamId);
+    }
+
     public static Optional<Membership> fromEntity(Optional<EntityMembership> entity) {
         if (entity.isEmpty()) {
             return Optional.empty();
@@ -61,6 +67,20 @@ public class Membership {
                 .userId(entity.get().userId)
                 .teamId(entity.get().teamId)
                 .build());
+    }
+
+    public static List<Membership> fromEntities(List<EntityMembership> findAllByRole) {
+        if (findAllByRole == null) {
+            return List.of();
+        }
+        return findAllByRole.stream().map(role -> Membership.fromEntity(Optional.of(role)).get()).toList();
+    }
+
+    public static List<ResponseMembershipDto> toDtoList(List<Membership> memberships) {
+        if (memberships == null) {
+            return List.of();
+        }
+        return memberships.stream().map(membership -> membership.toDto()).toList();
     }
 
 }
