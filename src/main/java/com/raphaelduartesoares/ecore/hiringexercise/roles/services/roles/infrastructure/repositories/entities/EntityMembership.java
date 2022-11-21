@@ -14,8 +14,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder()
 @ToString(callSuper = true)
 public class EntityMembership extends BaseEntity {
-    private String roleCode;
-    private String userId;
-    private String teamId;
+    public String roleCode;
+    public String userId;
+    public String teamId;
 
 }

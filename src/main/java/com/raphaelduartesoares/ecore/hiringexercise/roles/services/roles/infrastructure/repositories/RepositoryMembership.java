@@ -9,17 +9,17 @@ import java.util.stream.IntStream;
 
 import org.springframework.stereotype.Component;
 
-import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityRole;
-import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IRepositoryRoles;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityMembership;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IRepositoryMembership;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 @Component
-public class RepositoryRole implements IRepositoryRoles {
+public class RepositoryMembership implements IRepositoryMembership {
 
-    List<EntityRole> entities = new ArrayList<>();
+    List<EntityMembership> entities = new ArrayList<>();
 
     @Override
-    public EntityRole save(EntityRole entity) throws RepositoryException {
+    public EntityMembership save(EntityMembership entity) throws RepositoryException {
         if (entity.id == null) {
             insertEntity(entity);
         } else {
@@ -30,29 +30,22 @@ public class RepositoryRole implements IRepositoryRoles {
     }
 
     @Override
-    public Optional<EntityRole> findByCode(String code) {
-        Optional<EntityRole> existingRole = entities.stream().filter(role -> role.code.equals(code)).findFirst();
-        if (existingRole.isPresent()) {
-            return existingRole;
+    public Optional<EntityMembership> findByTeamAndUser(String teamId, String userId) {
+        Optional<EntityMembership> entity = entities.stream()
+                .filter(e -> e.teamId.equals(teamId) && e.userId.equals(userId))
+                .findFirst();
+        if (entity.isPresent()) {
+            return entity;
         }
         return Optional.empty();
     }
 
-    @Override
-    public Optional<EntityRole> findDefault() {
-        Optional<EntityRole> defaultRole = entities.stream().filter(role -> role.isDefault).findFirst();
-        if (defaultRole.isPresent()) {
-            return defaultRole;
-        }
-        return Optional.empty();
-    }
-
-    private void insertEntity(EntityRole entity) {
+    private void insertEntity(EntityMembership entity) {
         entity.id = UUID.randomUUID();
         entities.add(entity);
     }
 
-    private void updateEntity(EntityRole entity) throws RepositoryException {
+    private void updateEntity(EntityMembership entity) throws RepositoryException {
         OptionalInt existingRole = IntStream
                 .range(0, entities.size())
                 .filter(i -> entity.id.equals(entities.get(i).id))
@@ -66,7 +59,7 @@ public class RepositoryRole implements IRepositoryRoles {
     }
 
     private void printDatabase() {
-        System.out.println("Roles Database:");
+        System.out.println("Membership Database:");
         System.out.println(entities);
     }
 

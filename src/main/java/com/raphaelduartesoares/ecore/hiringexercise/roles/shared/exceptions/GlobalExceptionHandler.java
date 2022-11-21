@@ -36,6 +36,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), ex.errors);
     }
 
+    @ExceptionHandler(InternalOperationNotAllowedException.class)
+    public ResponseEntity<Object> handleInternalOperationNotAllowedException(InternalOperationNotAllowedException ex,
+            WebRequest request) {
+        return buildResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex.errors);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
