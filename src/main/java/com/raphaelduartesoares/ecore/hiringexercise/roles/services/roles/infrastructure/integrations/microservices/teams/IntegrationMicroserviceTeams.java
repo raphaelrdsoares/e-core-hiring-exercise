@@ -1,7 +1,5 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.integrations.microservices.teams;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -19,12 +17,6 @@ public class IntegrationMicroserviceTeams implements IIntegrationMicroserviceTea
 
     @Autowired
     private EnvironmentVariables environmentVariables;
-
-    @Override
-    public List<ResponseTeamDto> getTeams() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 
     @Override
     public ResponseTeamDto getTeamById(String id) {

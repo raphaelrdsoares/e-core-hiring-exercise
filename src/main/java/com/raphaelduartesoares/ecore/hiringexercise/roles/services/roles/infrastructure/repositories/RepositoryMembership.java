@@ -41,10 +41,23 @@ public class RepositoryMembership implements IRepositoryMembership {
     }
 
     @Override
-    public List<EntityMembership> findAllByRoleAndOrTeamIdAndOrUserId(String roleCodeDev, String teamId,
+    public List<EntityMembership> findAllByRoleAndOrTeamIdAndOrUserId(String roleCode, String teamId,
             String userId) {
-        // TODO Auto-generated method stub
-        return null;
+        List<EntityMembership> foundEntities = entities.stream().filter(e -> {
+            boolean isEntityInFilter = true;
+            if (roleCode != null) {
+                isEntityInFilter = isEntityInFilter && e.roleCode.equals(roleCode);
+            }
+            if (teamId != null) {
+                isEntityInFilter = isEntityInFilter && e.teamId.equals(teamId);
+            }
+            if (userId != null) {
+                isEntityInFilter = isEntityInFilter && e.userId.equals(userId);
+            }
+            return isEntityInFilter;
+        }).toList();
+
+        return foundEntities;
     }
 
     private void insertEntity(EntityMembership entity) {

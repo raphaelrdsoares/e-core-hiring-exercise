@@ -1,5 +1,6 @@
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -71,14 +72,14 @@ public class Membership {
 
     public static List<Membership> fromEntities(List<EntityMembership> findAllByRole) {
         if (findAllByRole == null) {
-            return List.of();
+            return new ArrayList<>();
         }
         return findAllByRole.stream().map(role -> Membership.fromEntity(Optional.of(role)).get()).toList();
     }
 
     public static List<ResponseMembershipDto> toDtoList(List<Membership> memberships) {
         if (memberships == null) {
-            return List.of();
+            return new ArrayList<>();
         }
         return memberships.stream().map(membership -> membership.toDto()).toList();
     }

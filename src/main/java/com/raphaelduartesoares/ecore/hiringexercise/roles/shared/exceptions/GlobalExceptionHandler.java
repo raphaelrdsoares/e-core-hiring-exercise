@@ -28,7 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<Object> constraintViolationException(ConstraintViolationException ex, WebRequest request) {
-        return buildResponseEntity(HttpStatus.NOT_FOUND, ex.getMessage(), List.of(ex.getMessage()));
+        return buildResponseEntity(HttpStatus.BAD_REQUEST, ex.getMessage(), List.of(ex.getMessage()));
     }
 
     @ExceptionHandler(NotFoundException.class)
