@@ -8,3 +8,10 @@ springdoc:
         path: /docs
     swagger-ui:
         path: /docs/swagger
+
+env:
+    microservices:
+        teams:
+            baseUrl: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams
+        users:
+            baseUrl: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/users
