@@ -47,16 +47,16 @@ public class Role {
                 .build();
     }
 
-    public static Optional<Role> fromEntity(EntityRole entity) {
-        if (entity == null) {
+    public static Optional<Role> fromEntity(Optional<EntityRole> entity) {
+        if (entity.isEmpty()) {
             return Optional.empty();
         }
         return Optional.of(
                 Role.builder()
-                        .id(entity.id.toString())
-                        .code(entity.code)
-                        .name(entity.name)
-                        .isDefault(entity.isDefault)
+                        .id(entity.get().id.toString())
+                        .code(entity.get().code)
+                        .name(entity.get().name)
+                        .isDefault(entity.get().isDefault)
                         .build());
     }
 
