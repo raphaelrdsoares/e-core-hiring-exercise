@@ -1,0 +1,131 @@
+{
+	"info": {
+		"_postman_id": "6f9b295d-7b31-4683-8f6c-b1e630beac4c",
+		"name": "e-Core hiring exercise",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "14452008"
+	},
+	"item": [
+		{
+			"name": "Tems Microservice",
+			"item": [
+				{
+					"name": "Find all teams",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams"
+					},
+					"response": []
+				},
+				{
+					"name": "Find team by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams/7cf0d32d-036f-40b6-86ea-2473d4ccaecd"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users Microservice",
+			"item": [
+				{
+					"name": "Find all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/users"
+					},
+					"response": []
+				},
+				{
+					"name": "Find user  by id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/users/fd282131-d8aa-4819-b0c8-d9e0bfb1b75c"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles Microservice",
+			"item": [
+				{
+					"name": "Find membership",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:9000/api/roles/memberships?roleCode=dev&teamId=7cf0d32d-036f-40b6-86ea-2473d4ccaecd&userId=8c35f835-3d03-4f30-9233-67cf1f9b2662",
+							"host": [
+								"localhost"
+							],
+							"port": "9000",
+							"path": [
+								"api",
+								"roles",
+								"memberships"
+							],
+							"query": [
+								{
+									"key": "roleCode",
+									"value": "dev"
+								},
+								{
+									"key": "teamId",
+									"value": "7cf0d32d-036f-40b6-86ea-2473d4ccaecd"
+								},
+								{
+									"key": "userId",
+									"value": "8c35f835-3d03-4f30-9233-67cf1f9b2662"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create role",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"code\": \"ux\",\n  \"name\": \"User Experience\",\n  \"isDefault\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9000/api/roles"
+					},
+					"response": []
+				},
+				{
+					"name": "Create membership",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"code\": \"ux\",\n    \"teamId\": \"7cf0d32d-036f-40b6-86ea-2473d4ccaecd\",\n    \"userId\": \"4e1e0fee-ccbc-4674-b346-4f66e2316779\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "localhost:9000/api/roles/memberships"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
