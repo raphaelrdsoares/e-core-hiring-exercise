@@ -22,20 +22,20 @@ public class UseCaseLookUpMembership {
 
         List<Membership> memberships = Membership
                 .fromEntities(
-                        repositoryMembership.findAllByRoleAndOrTeamIdAndOrUserId(requestLookUpMembershipDto.role,
-                                requestLookUpMembershipDto.team, requestLookUpMembershipDto.user));
+                        repositoryMembership.findAllByRoleAndOrTeamIdAndOrUserId(requestLookUpMembershipDto.roleCode,
+                                requestLookUpMembershipDto.teamId, requestLookUpMembershipDto.userId));
 
         return Membership.toDtoList(memberships);
     }
 
     private void checkIfRequestHasAtLeastOneField(RequestLookUpMembershipDto requestLookUpMembershipDto)
             throws InvalidInputDataException {
-        boolean isRoleCodeNullOrEmpty = requestLookUpMembershipDto.role == null
-                || requestLookUpMembershipDto.role.isBlank();
-        boolean isUserIdNullOrEmpty = requestLookUpMembershipDto.user == null
-                || requestLookUpMembershipDto.user.isBlank();
-        boolean isTeamIdNullOrEmpty = requestLookUpMembershipDto.team == null
-                || requestLookUpMembershipDto.team.isBlank();
+        boolean isRoleCodeNullOrEmpty = requestLookUpMembershipDto.roleCode == null
+                || requestLookUpMembershipDto.roleCode.isBlank();
+        boolean isUserIdNullOrEmpty = requestLookUpMembershipDto.userId == null
+                || requestLookUpMembershipDto.userId.isBlank();
+        boolean isTeamIdNullOrEmpty = requestLookUpMembershipDto.teamId == null
+                || requestLookUpMembershipDto.teamId.isBlank();
         if (isRoleCodeNullOrEmpty && isUserIdNullOrEmpty && isTeamIdNullOrEmpty) {
             throw new InvalidInputDataException("Invalid input data", "Request must have at least one parameter");
         }

@@ -47,7 +47,7 @@ public class RolesController {
     @Operation(summary = "Creates a role", description = "Creates a new role. If the new role is 'default=true', it will replace the existing default role.")
     @ApiResponse(responseCode = "201", description = "Role created.")
     @ApiResponse(responseCode = "400", description = "The request does not attend the specification.", content = @Content(schema = @Schema(implementation = ApiError.class)))
-    @ApiResponse(responseCode = "409", description = "Conflict with current server state.", content = @Content(schema = @Schema(implementation = ApiError.class)))
+    @ApiResponse(responseCode = "409", description = "Already exists a role with the code passed.", content = @Content(schema = @Schema(implementation = ApiError.class)))
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<ResponseRoleDto> createRole(@Valid @RequestBody RequestRoleDto requestRole) throws Exception {
         ResponseRoleDto response = serviceRoles.createRole(requestRole);
@@ -62,6 +62,7 @@ public class RolesController {
     @PostMapping(path = "/membership", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public void assignRole(@Valid @RequestBody RequestAssignRoleDto requestAssignRole) throws Exception {
         serviceRoles.assignRole(requestAssignRole);
+        // TODO - retornar a membership criada
     }
 
     @Operation(summary = "Look up for memberships.", description = "Return a list of memberships given a role code and/or team id and/or user id.")
@@ -69,10 +70,10 @@ public class RolesController {
     @ApiResponse(responseCode = "422", description = "Returns 422:UNPROCESSABLE_ENTITY when no parameters are passed ", content = @Content(schema = @Schema(implementation = ApiError.class)))
     @GetMapping(path = "/membership", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<ResponseMembershipDto>> lookUpMembership(
-            @RequestParam(required = false) String role,
-            @RequestParam(required = false) String team,
-            @RequestParam(required = false) String user) throws Exception {
-        RequestLookUpMembershipDto requestLookUpMembership = new RequestLookUpMembershipDto(role, team, user);
+            @RequestParam(required = false) String roleCode,
+            @RequestParam(required = false) String teamId,
+            @RequestParam(required = false) String userId) throws Exception {
+        RequestLookUpMembershipDto requestLookUpMembership = new RequestLookUpMembershipDto(roleCode, teamId, userId);
         validateRequestLookUp(requestLookUpMembership);
         List<ResponseMembershipDto> response = serviceRoles
                 .lookUpMembership(requestLookUpMembership);

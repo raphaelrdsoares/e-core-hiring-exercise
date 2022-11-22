@@ -12,12 +12,12 @@ import lombok.ToString;
 @ToString
 @EqualsAndHashCode
 public class RequestLookUpMembershipDto {
-    @Pattern(regexp = "^(?!\\s*$).+", message = "Property 'role' must not be blank")
-    public String role;
+    @Pattern(regexp = "^(?!\\s*$).+", message = "Property 'roleCode' must not be blank")
+    public String roleCode;
 
-    @Pattern(regexp = "^(?!\\s*$).+", message = "Property 'team' must not be blank")
-    public String team;
+    @Pattern(regexp = "^(?!\\s*$).+", message = "Property 'teamId' must not be blank")
+    public String teamId;
 
-    @Pattern(regexp = "^(?!\\s*$).+", message = "Property 'user' must not be blank")
-    public String user;
+    @Pattern(regexp = "^(?!\\s*$).+", message = "Property 'userId' must not be blank")
+    public String userId;
 }
