@@ -114,7 +114,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"code\": \"ux\",\n    \"teamId\": \"7cf0d32d-036f-40b6-86ea-2473d4ccaecd\",\n    \"userId\": \"4e1e0fee-ccbc-4674-b346-4f66e2316779\"\n}",
+							"raw": "{\n    \"roleCode\": \"ux\",\n    \"teamId\": \"7cf0d32d-036f-40b6-86ea-2473d4ccaecd\",\n    \"userId\": \"4e1e0fee-ccbc-4674-b346-4f66e2316779\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
