@@ -6,9 +6,7 @@ Todo o código desta API foi armazendo no meu repositório do Github https://git
 
 ## Funcionalidades
 
-Colocar um h2 com detalhes da implementação: Colocar o modelo de arquitetura seguido, Colocar que o banco de dados foi feito na forma de arquivos.
-
-Optei por documentar o uso de cada uma das funcionalidades criadas através do BDD com sintaxe Gherkin. Dessa forma, detalho o uso de cada endpoint e seus respectivos cenários, validando a entrega da funcionalidade.
+Optei por documentar o uso de cada uma das funcionalidades criadas através do BDD com sintaxe Gherkin. Dessa forma, detalho o uso de cada endpoint e seus respectivos cenários, validando a entrega e o funcionamento da API.
 
 ### Criar nova role
 
@@ -314,7 +312,7 @@ Também optei por deixar registrado as requisições no formato json para ser im
 
 ### Diagrama ER
 
-Para documentar o modelo de dados proposto, criei um sql que julgo representar as tabelas utilizadas nos micro-serviços `Teams` e `Users`, bem como o modelo de entidades que utilizei para montar este micro-serivço `Roles`.
+Para documentar o modelo de dados proposto, criei um sql que julgo representar as tabelas utilizadas nos micro-serviços `Teams` e `Users`, bem como o modelo de entidades que utilizei para montar este micro-serviço `Roles`.
 
 Esse arquivo SQL pode ser encontrado na pasta [/docs/db.sql](./docs/db.sql).
 
@@ -332,18 +330,37 @@ Sobre os testes, eu utilizei uma abordagem mista de testes unitários e de integ
 
 ### Pre-requisitos
 
-## Uso
+Os únicos pre-requisitos para rodar são:
+
+-   Ter Java jdk:17
+
+OU
+
+-   Docker
+-   Docker desktop ou Colima
+
+### Uso
+
+Para executar o projeto localmente, basta abri-lo com o editor de sua preferência (eu usei o VSCode para desenvolver) e rodar como um projeto Java.
+
+Para executar o projeto com o Docker, dado que o Docker esteja iniciado, basta abrir o terminal na pasta raiz do projeto e executar o comando `$ docker-compose up`.
+
+Quando o projeto for executado, ele aceitará requisições em `localhost:9000/api/...`
 
 ## Possíveis melhorias
 
-1. Achei muito simplórios dados retornados dos endpoint `teams` e `users`.
- <!-- 1. No endpoint users o que eu faria
-    1. O `displayName` parece ser um username que o usuário usa pra fazer login. Trocaria o nome dessa propriedade para `username`;
-    2. Incluiria o atributo `name` que seria o nome completo real do usuário, ex "Fulano de Tal";
-    3. Caso fosse necessário exibir um nome curto, ex "Fulano", incluiria um atributo `shortName` ou `firstName`;
-2. No endpoint teams o que eu faria
-    1. Dentro de cada time Incluiria uma lista -->
-3. Ambos os endpoint estão retornando todos os dados sem paginação. Incluiria a paginação de forma opcional nos endpoint
- <!-- 4. A busca do time pelo Id está retornando nulo com HTTP:200. Alteraria para retornar 204:NO_CONTENT -->
+Nos endpoints `teams` e `users`:
 
-4. Implementaria uma estratégia de logs, registrando logs tratar cada exceção, bem como ao receber novas requisições e ao registrar dados no banco.
+1. Achei muito simplórios dados retornados do endpoint `users`.
+2. Não gostei do nome da propriedade `displayName` no users. Trocaria para `username`.
+3. Na consulta de todos os usuário, retornaria alguns outros dados do usuário, como `email`, `firstName` e `lastName`.
+4. Não gosto de usar os campos `firstName` e `lastName` para obter o nome do usuário. Prefiro algo como `fullName` ou apenas `name` para obter o nome completo para algum fim legal, e `socialName` para obter o nome que o usuário gostaria de ser chamado para exibir na aplicação.
+5. Na busca do usuário por id, não foi retornado o `email`.
+6. Não há autenticação alguma nos endpoints. Tudo bem por serem endpoint de testes, mas em aplicações reais isso é inadimissível.
+7. Incluiria um swagger para mapear os endpoint e documentar os dados recebidos e enviados.
+8. Não há paginação nas buscas. Dependendo de onde forem usado, talvez fosse interessante inserir de forma opcional.
+
+No micro-serviço `roles`:
+
+1. Implementaria uma estratégia de logs, registrando logs a cada exceção lançada, bem como ao receber novas requisições e ao registrar dados no banco.
+2. Caso fosse utilizar como uma aplicação real, integraria com um banco de dados e com um sistema de monitoramento.
