@@ -15,7 +15,7 @@ env:
             roles:
                 filePath: database/roles.json
             membership:
-                filePath: database/membership.json
+                filePath: database/memberships.json
     microservices:
         teams:
             baseUrl: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams

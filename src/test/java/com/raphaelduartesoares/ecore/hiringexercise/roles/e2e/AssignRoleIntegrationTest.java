@@ -21,7 +21,7 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.Repo
 @ActiveProfiles("tests-e2e")
 public class AssignRoleIntegrationTest {
 
-    private static final String PATH_MEMBERSHIP = "/roles/membership";
+    private static final String PATH_MEMBERSHIP = "/roles/memberships";
 
     @Autowired
     private WebTestClient webClient;
