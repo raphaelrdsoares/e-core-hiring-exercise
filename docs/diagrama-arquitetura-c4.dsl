@@ -1,5 +1,5 @@
 /*
- * Copy this code below and paste it in https://structurizr.com/dsl to see the C4 model diagram
+ * Copy the code below and paste it in https://structurizr.com/dsl to see the C4 model diagram
 */
 
 workspace "e-Core: Role Service"  {
