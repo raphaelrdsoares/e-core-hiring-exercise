@@ -6,6 +6,11 @@ build/
 !**/src/test/**/build/
 .DS_Store
 
+### Database ###
+database/
+database-tests-e2e/
+
+
 ### STS ###
 .apt_generated
 .classpath
