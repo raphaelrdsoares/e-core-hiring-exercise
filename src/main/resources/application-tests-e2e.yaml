@@ -6,9 +6,9 @@ env:
     database:
         schema:
             roles:
-                filePath: database-tests-e2e/roles.json
+                filePath: database/tests-e2e/roles.json
             membership:
-                filePath: database-tests-e2e/membership.json
+                filePath: database/tests-e2e/membership.json
     microservices:
         teams:
             baseUrl: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams
