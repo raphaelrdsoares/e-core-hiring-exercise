@@ -37,53 +37,53 @@ Endpoint para cadastro de novas roles:
 
 **Critérios de aceite**
 
-Cenário A1: Criação de uma role não default com sucesso
-DADO QUE a aplicação está iniciada
-E não cadastrei nenhuma role previamente
-QUANDO envio uma requisição passando um código e um nome qualquer
-E informo que não é uma role default
-ENTÃO recebo o retorno HTTP CREATED:201
+Cenário A1: Criação de uma role não default com sucesso\
+DADO QUE a aplicação está iniciada\
+E não cadastrei nenhuma role previamente\
+QUANDO envio uma requisição passando um código e um nome qualquer\
+E informo que não é uma role default\
+ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
-Cenário A2: Criação de uma role não default com sucesso
-DADO QUE a aplicação está iniciada
-E não cadastrei nenhuma role previamente
-QUANDO envio uma requisição passando um código e um nome qualquer
-E não informo o campo 'default' no payload
-ENTÃO recebo o retorno HTTP CREATED:201
-E no payload de resposta os dados cadastrados
+Cenário A2: Criação de uma role não default com sucesso\
+DADO QUE a aplicação está iniciada\
+E não cadastrei nenhuma role previamente\
+QUANDO envio uma requisição passando um código e um nome qualquer\
+E não informo o campo 'default' no payload\
+ENTÃO recebo o retorno HTTP CREATED:201\
+E no payload de resposta os dados cadastrados\
 E no payload vejo que a role foi cadastrada como não default
 
-Cenário B: Criação de uma role default com sucesso
-DADO QUE a aplicação está iniciada
-E não cadastrei nenhuma role previamente
-QUANDO envio uma requisição passando um código e um nome qualquer
-E informo que não é uma role default
-ENTÃO recebo o retorno HTTP CREATED:201
+Cenário B: Criação de uma role default com sucesso\
+DADO QUE a aplicação está iniciada\
+E não cadastrei nenhuma role previamente\
+QUANDO envio uma requisição passando um código e um nome qualquer\
+E informo que não é uma role default\
+ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
-Cenário C: Substituir uma role default com sucesso
-DADO QUE a aplicação está iniciada
-E já cadastrei uma role default previamente
-QUANDO envio uma requisição passando um código e um nome qualquer
-E informo que é uma role default
-ENTÃO recebo o retorno HTTP CREATED:201
+Cenário C: Substituir uma role default com sucesso\
+DADO QUE a aplicação está iniciada\
+E já cadastrei uma role default previamente\
+QUANDO envio uma requisição passando um código e um nome qualquer\
+E informo que é uma role default\
+ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
-Cenário D: Erro ao criar uma role sem informar os campos obrigatórios
-DADO QUE a aplicação está iniciada
-E não cadastrei nenhuma role previamente
-QUANDO envio uma requisição para criar um role
-E não informo o código ou o nome da role
-ENTÃO recebo o retorno HTTP BAD_REQUEST:400
+Cenário D: Erro ao criar uma role sem informar os campos obrigatórios\
+DADO QUE a aplicação está iniciada\
+E não cadastrei nenhuma role previamente\
+QUANDO envio uma requisição para criar um role\
+E não informo o código ou o nome da role\
+ENTÃO recebo o retorno HTTP BAD_REQUEST:400\
 E no payload de resposta uma mensagem informando que não é possível cadastrar uma role sem informar os campos obrigatórios
 
-Cenário E: Erro ao criar uma role que já existe
-DADO QUE a aplicação está iniciada
-E não cadastrei nenhuma role previamente
-QUANDO envio uma requisição para criar um role
-E informo como código uma das roles pre-definidas (ex: dev)
-ENTÃO recebo o retorno HTTP CONFLICT:409
+Cenário E: Erro ao criar uma role que já existe\
+DADO QUE a aplicação está iniciada\
+E não cadastrei nenhuma role previamente\
+QUANDO envio uma requisição para criar um role\
+E informo como código uma das roles pre-definidas (ex: dev)\
+ENTÃO recebo o retorno HTTP CONFLICT:409\
 E no payload de resposta uma mensagem informando que já existe uma role com esse código
 
 ### Criar memberships
@@ -119,82 +119,82 @@ Endpoint para atribuição de roles:
 
 **Cenários**
 
-Cenário A: Campos obrigatório não informados
-DADO QUE a aplicação está iniciada
-QUANDO realizado uma requisição para atribuir uma role
-E não informo o id do time ou id do usuário
-ENTÃO recebo o retorno HTTP BAD_REQUEST:400
+Cenário A: Campos obrigatório não informados\
+DADO QUE a aplicação está iniciada\
+QUANDO realizado uma requisição para atribuir uma role\
+E não informo o id do time ou id do usuário\
+ENTÃO recebo o retorno HTTP BAD_REQUEST:400\
 E no payload da resposta um mensagem informando que não é possível atribuir uma role sem informar os campos obrigatórios
 
-Cenário B: Role não existe
-DADO QUE a aplicação está iniciada
-QUANDO realizado uma requisição para atribuir uma role
-E informo o código de uma role que não está cadastrada
-ENTÃO recebo o retorno HTTP NOT_FOUND:404
+Cenário B: Role não existe\
+DADO QUE a aplicação está iniciada\
+QUANDO realizado uma requisição para atribuir uma role\
+E informo o código de uma role que não está cadastrada\
+ENTÃO recebo o retorno HTTP NOT_FOUND:404\
 E no payload da resposta um mensagem informando que a role não foi encontrada
 
-Cenário C: Time não existe
-DADO QUE a aplicação está iniciada
-E possuo o código de uma role existente
-QUANDO realizado uma requisição para atribuir uma role
-E informo id de um time que não existe
-ENTÃO recebo o retorno HTTP NOT_FOUND:404
+Cenário C: Time não existe\
+DADO QUE a aplicação está iniciada\
+E possuo o código de uma role existente\
+QUANDO realizado uma requisição para atribuir uma role\
+E informo id de um time que não existe\
+ENTÃO recebo o retorno HTTP NOT_FOUND:404\
 E no payload da resposta um mensagem informando que time não foi encontrado
 
-Cenário D: Usuário não existe dentro do time
-DADO QUE a aplicação está iniciada
-E possuo o código de uma role existente
-E possuo o id de um time existente
-QUANDO realizado uma requisição para atribuir uma role
-E informo id de um usuário que não pertence ao time
-ENTÃO recebo o retorno HTTP NOT_FOUND:404
+Cenário D: Usuário não existe dentro do time\
+DADO QUE a aplicação está iniciada\
+E possuo o código de uma role existente\
+E possuo o id de um time existente\
+QUANDO realizado uma requisição para atribuir uma role\
+E informo id de um usuário que não pertence ao time\
+ENTÃO recebo o retorno HTTP NOT_FOUND:404\
 E no payload da resposta um mensagem informando que o usuário não pertence ao time
 
-Cenário E: Erro ao atribuir sem informar a role e role default não existe
-DADO QUE a aplicação está iniciada
-E não existe uma role default cadastrada
-E possuo o id de um time existente
-E possuo o id de um usuário que pertence ao time
-QUANDO realizado uma requisição para atribuir uma role
-E não informo uma role
-ENTÃO recebo o retorno HTTP NOT_FOUND:404
+Cenário E: Erro ao atribuir sem informar a role e role default não existe\
+DADO QUE a aplicação está iniciada\
+E não existe uma role default cadastrada\
+E possuo o id de um time existente\
+E possuo o id de um usuário que pertence ao time\
+QUANDO realizado uma requisição para atribuir uma role\
+E não informo uma role\
+ENTÃO recebo o retorno HTTP NOT_FOUND:404\
 E no payload da resposta um mensagem informando que não existe uma role default
 
-Cenário F1: Atribuição com sucesso para um membro do time
-DADO QUE a aplicação está iniciada
-E possuo o código de uma role existente
-E possuo o id de um time existente
-E possuo o id de um usuário que pertence ao time
-QUANDO realizado uma requisição para atribuir uma role informando todos os dados
-ENTÃO recebo o retorno HTTP CREATED:201
+Cenário F1: Atribuição com sucesso para um membro do time\
+DADO QUE a aplicação está iniciada\
+E possuo o código de uma role existente\
+E possuo o id de um time existente\
+E possuo o id de um usuário que pertence ao time\
+QUANDO realizado uma requisição para atribuir uma role informando todos os dados\
+ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
-Cenário F2: Atribuição com sucesso para o líder do time
-DADO QUE a aplicação está iniciada
-E possuo o código de uma role existente
-E possuo o id de um time existente
-E possuo o id de um usuário que é o líder do time
-QUANDO realizado uma requisição para atribuir uma role informando todos os dados
-ENTÃO recebo o retorno HTTP CREATED:201
+Cenário F2: Atribuição com sucesso para o líder do time\
+DADO QUE a aplicação está iniciada\
+E possuo o código de uma role existente\
+E possuo o id de um time existente\
+E possuo o id de um usuário que é o líder do time\
+QUANDO realizado uma requisição para atribuir uma role informando todos os dados\
+ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
-Cenário G: Atribuição com sucesso sem informar a role
-DADO QUE a aplicação está iniciada
-E existe uma role default cadastrada
-E possuo o id de um time existente
-E possuo o id de um usuário que é o líder do time
-QUANDO realizado uma requisição para atribuir uma role informando todos os dados
-ENTÃO recebo o retorno HTTP CREATED:201
+Cenário G: Atribuição com sucesso sem informar a role\
+DADO QUE a aplicação está iniciada\
+E existe uma role default cadastrada\
+E possuo o id de um time existente\
+E possuo o id de um usuário que é o líder do time\
+QUANDO realizado uma requisição para atribuir uma role informando todos os dados\
+ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
-Cenário H: Sobrescrita de atribuição com sucesso
-DADO QUE a aplicação está iniciada
-E já existe uma membership para o usuário no time
-E possuo o código de uma role diferente da existente na membership
-E possuo o id de um time existente
-E possuo o id de um usuário que é o líder do time
-QUANDO realizado uma requisição para atribuir uma role informando todos os dados
-ENTÃO recebo o retorno HTTP CREATED:201
+Cenário H: Sobrescrita de atribuição com sucesso\
+DADO QUE a aplicação está iniciada\
+E já existe uma membership para o usuário no time\
+E possuo o código de uma role diferente da existente na membership\
+E possuo o id de um time existente\
+E possuo o id de um usuário que é o líder do time\
+QUANDO realizado uma requisição para atribuir uma role informando todos os dados\
+ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
 ### Consultar memberships
