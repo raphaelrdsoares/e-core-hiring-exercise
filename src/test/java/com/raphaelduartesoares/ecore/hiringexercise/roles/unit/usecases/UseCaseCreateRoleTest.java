@@ -34,7 +34,7 @@ public class UseCaseCreateRoleTest {
 
     private String roleCode = "dev";
     private String roleName = "Developer";
-    private String uuid = "dc82bf91-d3a1-5afc-8b66-3959ae896f05";
+    private String uuid = UUID.randomUUID().toString();
     private EntityRole.EntityRoleBuilder mockEntityBuilder;
 
     @BeforeEach
@@ -87,7 +87,7 @@ public class UseCaseCreateRoleTest {
     public void shouldUpdateExistingDefaultRoleToFalseWhenCreateNewDefaultRole() throws Exception {
         boolean isDefault = true;
         EntityRole mockEntityDefault = (EntityRole) mockEntityBuilder.code("deva").isDefault(true)
-                .id(UUID.fromString("c95f5701-a136-55ad-867b-9748db868af8")).build();
+                .id(UUID.randomUUID()).build();
         when(repositoryRoles.findDefault()).thenReturn(Optional.of(mockEntityDefault));
         when(repositoryRoles.findByCode(roleCode)).thenReturn(Optional.empty());
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.isDefault(
@@ -107,7 +107,7 @@ public class UseCaseCreateRoleTest {
     public void shouldNotUpdateExistingDefaultRoleToFalseWhenCreateNewNonDefaultRole() throws Exception {
         boolean isDefault = false;
         EntityRole mockEntityDefault = (EntityRole) mockEntityBuilder.code("default").isDefault(true)
-                .id(UUID.fromString("c95f5701-a136-55ad-867b-9748db868af8")).build();
+                .id(UUID.randomUUID()).build();
         when(repositoryRoles.findDefault()).thenReturn(Optional.of(mockEntityDefault));
         when(repositoryRoles.findByCode(roleCode)).thenReturn(Optional.empty());
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.isDefault(

@@ -38,33 +38,29 @@ public class UseCaseAssignRoleTest {
     private UseCaseAssignRole useCase;
 
     private String roleCodeDev = "dev";
-    private String userId = "f6341d2e-9f9e-5c64-8467-fb092d20a36e";
-    private String teamLeadId = "bc81f10f-60f2-5a2c-a838-4ff28914171b";
-    private String teamId = "251b0d8a-0a27-5c35-a9c4-7287c8911ad5";
+    private String userId = UUID.randomUUID().toString();
+    private String teamLeadId = UUID.randomUUID().toString();
+    private String teamId = UUID.randomUUID().toString();
     private EntityRole mockEntityRoleDev = EntityRole
             .builder()
             .code(roleCodeDev)
             .name("Developer")
             .isDefault(true)
-            .id(UUID.fromString("88017d97-a4b3-58b3-9cf5-580197413508"))
+            .id(UUID.randomUUID())
             .build();
     private EntityMembership mockEntityMembership = EntityMembership
             .builder()
             .roleCode("qa")
             .teamId(teamId)
             .userId(userId)
-            .id(UUID.fromString("e4181e91-7b50-5433-b90c-d9e9aa21f3c6"))
+            .id(UUID.randomUUID())
             .build();
     private ResponseTeamDto mockTeamDto = ResponseTeamDto
             .builder()
             .id(teamId)
             .name("Ordinary Coral Lynx")
             .teamLeadId(teamLeadId)
-            .teamMemberIds(
-                    Arrays.asList(
-                            "95750ce6-698b-59cf-8d90-4e6a09b910f4",
-                            "c8282811-587e-5409-a48d-0f6e4b6e08a0",
-                            userId))
+            .teamMemberIds(Arrays.asList(UUID.randomUUID().toString(), UUID.randomUUID().toString(), userId))
             .build();
 
     @BeforeEach
@@ -119,8 +115,7 @@ public class UseCaseAssignRoleTest {
     );
 
     verify(microserviceTeams, times(1)).getTeamById(teamId);
-    assertEquals(
-      "[There is no team with id '251b0d8a-0a27-5c35-a9c4-7287c8911ad5']",
+    assertEquals(String.format( "[There is no team with id '%s']", teamId),
       exception.errors.toString()
     );
     assertEquals("Entity not found", exception.getMessage());
@@ -128,7 +123,7 @@ public class UseCaseAssignRoleTest {
 
     @Test
     public void shouldThrowExceptionWhenUserDoesNotExistsInTeam() {
-        mockTeamDto.teamMemberIds.set(2, "f8778885-9c1e-5d01-a5f6-9b9f4254e3e1");
+        mockTeamDto.teamMemberIds.set(2, UUID.randomUUID().toString());
         when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRoleDev));
         when(microserviceTeams.getTeamById(teamId)).thenReturn(mockTeamDto);
 
@@ -144,7 +139,7 @@ public class UseCaseAssignRoleTest {
 
         verify(microserviceTeams, times(1)).getTeamById(teamId);
         assertEquals(
-                "[There is no user 'f6341d2e-9f9e-5c64-8467-fb092d20a36e' in team '251b0d8a-0a27-5c35-a9c4-7287c8911ad5']",
+                String.format("[There is no user '%s' in team '%s']", userId, teamId),
                 exception.errors.toString());
         assertEquals("Entity not found", exception.getMessage());
     }
