@@ -3,11 +3,22 @@ plugins {
 	id 'war'
 	id 'org.springframework.boot' version '2.7.5'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+    id 'jacoco'
 }
 
 group = 'com.raphaelduartesoares.e-core.hiring-exercise'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
+
+jacoco {
+    toolVersion = "0.8.8" //jacoco version
+    reportsDir = file("$buildDir/reports/jacoco") //default directory where jacoco generates test reports
+}
+
+
+tasks.named('wrapper') {
+    gradleVersion = "7.5.1"
+}
 
 repositories {
 	mavenCentral()
@@ -22,6 +33,7 @@ dependencies {
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.mockito:mockito-core:4.7.0'
     testImplementation 'org.mockito:mockito-inline:4.7.0'
