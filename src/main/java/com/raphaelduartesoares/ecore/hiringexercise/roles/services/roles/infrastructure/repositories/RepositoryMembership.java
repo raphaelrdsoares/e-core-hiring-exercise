@@ -69,6 +69,11 @@ public class RepositoryMembership extends RepositoryBase<EntityMembership> imple
         return foundEntities;
     }
 
+    public void deleteAll() throws RepositoryException {
+        entities = new ArrayList<>();
+        persistEntitiesInFile();
+    }
+
     private void insertEntity(EntityMembership entity) {
         entity.id = UUID.randomUUID();
         entity.createdAt = Timestamp.valueOf(LocalDateTime.now());
