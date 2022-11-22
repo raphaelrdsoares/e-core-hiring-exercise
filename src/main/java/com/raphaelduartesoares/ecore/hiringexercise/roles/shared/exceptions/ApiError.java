@@ -5,13 +5,9 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Builder;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
-@Builder
 public class ApiError {
     @Schema(example = "BAD_REQUEST")
     private HttpStatus status;
@@ -25,10 +21,5 @@ public class ApiError {
         this.status = status;
         this.title = title;
         this.errors = errors;
-    }
-
-    public ApiError(final HttpStatus status, final String title) {
-        this.status = status;
-        this.title = title;
     }
 }

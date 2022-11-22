@@ -2,10 +2,8 @@ package com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.ToString;
 
 @AllArgsConstructor
-@ToString
 public class ResponseMembershipDto {
     @Schema(example = "dev")
     public String roleCode;

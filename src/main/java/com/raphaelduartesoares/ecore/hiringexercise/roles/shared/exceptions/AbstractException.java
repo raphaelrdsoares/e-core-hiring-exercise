@@ -13,8 +13,4 @@ public abstract class AbstractException extends Exception {
         this.errors = Arrays.asList(error);
     }
 
-    public AbstractException(String title, List<String> error) {
-        super(title);
-        this.errors = error;
-    }
 }
