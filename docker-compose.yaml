@@ -1,0 +1,15 @@
+version: "3"
+services:
+    e-core-api-roles:
+        container_name: e-core-api-roles
+        build:
+            context: .
+            dockerfile: Dockerfile
+        image: e-core-api-roles:latest
+        ports:
+            - 9000:9000
+        networks:
+            - spring-cloud-network
+networks:
+    spring-cloud-network:
+        driver: bridge
