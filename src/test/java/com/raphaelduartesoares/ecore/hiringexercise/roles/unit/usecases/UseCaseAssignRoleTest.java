@@ -215,6 +215,7 @@ public class UseCaseAssignRoleTest {
     public void shouldAssignRoleToTeamLeadSuccessfully() throws Exception {
         when(repositoryRoles.findByCode(roleCodeDev)).thenReturn(Optional.of(mockEntityRoleDev));
         when(microserviceTeams.getTeamById(teamId)).thenReturn(mockTeamDto);
+        when(repositoryMembership.save(Mockito.any(EntityMembership.class))).thenReturn(mockEntityMembershipDev);
 
         useCase.assignRole(new RequestAssignRoleDto(roleCodeDev, teamLeadId, teamId));
 
