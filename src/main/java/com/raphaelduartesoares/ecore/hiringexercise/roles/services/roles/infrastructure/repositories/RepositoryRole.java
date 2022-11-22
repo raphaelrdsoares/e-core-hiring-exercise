@@ -11,16 +11,21 @@ import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityRole;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IRepositoryRoles;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.EnvironmentVariables;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 @Component
 public class RepositoryRole extends RepositoryBase<EntityRole> implements IRepositoryRoles {
 
     List<EntityRole> entities = new ArrayList<>();
+
+    @Autowired
+    private EnvironmentVariables environmentVariables;
 
     @Override
     public EntityRole save(EntityRole entity) throws RepositoryException {
@@ -49,6 +54,11 @@ public class RepositoryRole extends RepositoryBase<EntityRole> implements IRepos
             return defaultRole;
         }
         return Optional.empty();
+    }
+
+    public void deleteAll() throws RepositoryException {
+        entities = new ArrayList<>();
+        persistEntitiesInFile();
     }
 
     private void insertEntity(EntityRole entity) {
@@ -80,7 +90,7 @@ public class RepositoryRole extends RepositoryBase<EntityRole> implements IRepos
 
     @Override
     String getDatabaseFilePath() {
-        return "database/roles.json";
+        return environmentVariables.getDatabaseSchemaRolesFilePath();
     }
 
     @Override

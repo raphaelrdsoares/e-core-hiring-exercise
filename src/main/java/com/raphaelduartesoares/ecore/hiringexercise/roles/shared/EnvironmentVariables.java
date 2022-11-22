@@ -14,4 +14,10 @@ public class EnvironmentVariables {
     @Value("${env.microservices.users.baseUrl}")
     private String microservicesUsersBaseUrl;
 
+    @Value("${env.database.schema.roles.filePath}")
+    private String databaseSchemaRolesFilePath;
+
+    @Value("${env.database.schema.membership.filePath}")
+    private String databaseSchemaMembershipFilePath;
+
 }

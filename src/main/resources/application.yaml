@@ -10,6 +10,12 @@ springdoc:
         path: /docs/swagger
 
 env:
+    database:
+        schema:
+            roles:
+                filePath: database/roles.json
+            membership:
+                filePath: database/membership.json
     microservices:
         teams:
             baseUrl: https://cgjresszgg.execute-api.eu-west-1.amazonaws.com/teams

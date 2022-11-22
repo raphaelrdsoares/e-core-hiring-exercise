@@ -11,16 +11,21 @@ import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityMembership;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.interfaces.IRepositoryMembership;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.EnvironmentVariables;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.RepositoryException;
 
 @Component
 public class RepositoryMembership extends RepositoryBase<EntityMembership> implements IRepositoryMembership {
 
     List<EntityMembership> entities = new ArrayList<>();
+
+    @Autowired
+    private EnvironmentVariables environmentVariables;
 
     @Override
     public EntityMembership save(EntityMembership entity) throws RepositoryException {
@@ -93,7 +98,7 @@ public class RepositoryMembership extends RepositoryBase<EntityMembership> imple
 
     @Override
     String getDatabaseFilePath() {
-        return "database/membership.json";
+        return environmentVariables.getDatabaseSchemaMembershipFilePath();
 
     }
 
