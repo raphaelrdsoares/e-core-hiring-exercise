@@ -72,16 +72,17 @@ public class RepositoryMembership extends RepositoryBase<EntityMembership> imple
     }
 
     private void updateEntity(EntityMembership entity) throws RepositoryException {
-        OptionalInt existingRole = IntStream
+        OptionalInt existingRoleIndex = IntStream
                 .range(0, entities.size())
                 .filter(i -> entity.id.equals(entities.get(i).id))
                 .findFirst();
 
-        if (existingRole.isEmpty()) {
+        if (existingRoleIndex.isEmpty()) {
             throw new RepositoryException("Error updating entity", "entity id not found");
         }
+        entity.createdAt = entities.get(existingRoleIndex.getAsInt()).createdAt;
         entity.updatedAt = Timestamp.valueOf(LocalDateTime.now());
-        int index = existingRole.getAsInt();
+        int index = existingRoleIndex.getAsInt();
         entities.set(index, entity);
     }
 

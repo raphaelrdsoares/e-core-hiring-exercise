@@ -1,4 +1,3 @@
-
 package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories;
 
 import java.sql.Timestamp;
@@ -60,16 +59,17 @@ public class RepositoryRole extends RepositoryBase<EntityRole> implements IRepos
     }
 
     private void updateEntity(EntityRole entity) throws RepositoryException {
-        OptionalInt existingRole = IntStream
+        OptionalInt existingRoleIndex = IntStream
                 .range(0, entities.size())
                 .filter(i -> entity.id.equals(entities.get(i).id))
                 .findFirst();
 
-        if (existingRole.isEmpty()) {
+        if (existingRoleIndex.isEmpty()) {
             throw new RepositoryException("Error updating entity", "entity id not found");
         }
+        entity.createdAt = entities.get(existingRoleIndex.getAsInt()).createdAt;
         entity.updatedAt = Timestamp.valueOf(LocalDateTime.now());
-        int index = existingRole.getAsInt();
+        int index = existingRoleIndex.getAsInt();
         entities.set(index, entity);
     }
 

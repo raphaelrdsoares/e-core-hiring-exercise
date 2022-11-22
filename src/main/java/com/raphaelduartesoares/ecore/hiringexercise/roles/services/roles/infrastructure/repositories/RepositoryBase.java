@@ -62,7 +62,7 @@ public abstract class RepositoryBase<T> {
 
             T[] jsonEntities = new Gson().fromJson(dbAsjson.toString(), clazz);
             if (jsonEntities != null) {
-                return Arrays.asList(jsonEntities);
+                return new ArrayList<>(Arrays.asList(jsonEntities));
             }
         } catch (IOException ex) {
             ex.printStackTrace();
