@@ -118,7 +118,7 @@ Endpoint para atribuição de roles:
 
 {
   "roleCode": "dev", // código da role. Campo opcional. Valor default: role default cadastrada no banco
-  "teamID": "b59c9365-15e3-5498-bc2e-35a3f3fed9e1", // Id do time.  Campo obrigatório
+  "teamId": "b59c9365-15e3-5498-bc2e-35a3f3fed9e1", // Id do time.  Campo obrigatório
   "userId": "4961349e-38dd-560c-818f-c7d021149441" //  Id do usuário.  Campo obrigatório
 }
 
@@ -213,10 +213,84 @@ E no payload de resposta os dados cadastrados
 
 **Contexto**
 
-Foi solicitado a criação de um endpoint para consultar as memberships cadastradas
+A última solicitação foi que houvesse uma forma de consultar as memberships criadas. Foi pedido que, dada um role, fosse retornado todos os memberships associados, e que, dada uma membership (team + user), fosse retornada a role. Para isso eu criei apenas 1 endpoint, que aceita 3 parâmetros, roleCode, teamId e userId, e retorna todas as memberships relacionadas a esses parâmetros.
+
+A única exigência é que pelo menos 1 dos parâmetros seja preenchido, caso contrário, é retornado um erro.
+
 **Notas técnicas**
 
+Endpoint para consulta de memberships:
+
+```JSON
+// GET /api/roles/memberships?roleCode=dev&teamId=b59c9365-15e3-5498-bc2e-35a3f3fed9e1&userId=4961349e-38dd-560c-818f-c7d021149441
+
+// payload da resposta
+[
+    {
+      "roleCode": "dev",
+      "teamId": "b59c9365-15e3-5498-bc2e-35a3f3fed9e1",
+      "userId": "4961349e-38dd-560c-818f-c7d021149441"
+    }
+]
+
+```
+
 **Cenários**
+
+Cenário A: Erro na consulta sem informar nenhum parâmetros\
+DADO QUE a aplicação está iniciada\
+QUANDO realizado uma requisição sem informar nenhum parâmetro\
+ENTÃO recebo o retorno HTTP BAD_REQUEST:400\
+E no payload de resposta uma mensagem informando que é necessário passar pelo menos 1 parâmetro
+
+Cenário B: Não há memberships cadastradas para o conjunto de parâmetros\
+DADO QUE a aplicação está iniciada\
+E não existe nenhuma membership cadastrada\
+QUANDO realizado uma requisição com algum parâmetro válido\
+ENTÃO recebo o retorno HTTP OK:200\
+E no payload de resposta uma lista vazia
+
+Cenário C: Consulta todos os membership de uma role\
+DADO QUE a aplicação está iniciada\
+E existe várias membership cadastradas para uma role\
+QUANDO realizado uma requisição o código da role\
+ENTÃO recebo o retorno HTTP OK:200\
+E no payload de resposta uma lista de todas as memberships dessa role
+
+Cenário D: Consulta todos os membership de um team\
+DADO QUE a aplicação está iniciada\
+E existe várias membership cadastradas para um team\
+QUANDO realizado uma requisição com o id deste team\
+ENTÃO recebo o retorno HTTP OK:200\
+E no payload de resposta uma lista de todas as memberships desse team
+
+Cenário E: Consulta todos os membership de um user\
+DADO QUE a aplicação está iniciada\
+E existe várias membership cadastradas para um user\
+QUANDO realizado uma requisição com o id deste user\
+ENTÃO recebo o retorno HTTP OK:200\
+E no payload de resposta uma lista de todas as memberships desse user
+
+Cenário F: Consulta todos os membership de um team com uma role\
+DADO QUE a aplicação está iniciada\
+E existe várias membership cadastradas para um team e uma role\
+QUANDO realizado uma requisição com o id deste team e o código desta role\
+ENTÃO recebo o retorno HTTP OK:200\
+E no payload de resposta uma lista de todas as memberships desse team com essa role
+
+Cenário G: Consulta todos os membership de um user com uma role\
+DADO QUE a aplicação está iniciada\
+E existe várias membership cadastradas com uma role para um user\
+QUANDO realizado uma requisição com o id deste user e o código desta role\
+ENTÃO recebo o retorno HTTP OK:200\
+E no payload de resposta uma lista de todas as memberships desse user com essa role
+
+Cenário H: Consulta o membership de um user em um team\
+DADO QUE a aplicação está iniciada\
+E existe uma membership cadastrada para um user em um team\
+QUANDO realizado uma requisição com o id deste user e o id deste team\
+ENTÃO recebo o retorno HTTP OK:200\
+E no payload de resposta uma lista com a membership desse user neste team
 
 </details>
 
