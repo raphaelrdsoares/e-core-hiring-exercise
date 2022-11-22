@@ -2,7 +2,7 @@
 
 ## Descrição
 
-Todo o código desta API foi armazendo no meu repositório do Github https://github.com/raphaelrdsoares/e-core-hiring-exercise.
+Todo o código desta API foi armazendo no meu repositório do Github https://github.com/raphaelrdsoares/e-core-hiring-exercise, que está temporáriamente com visubilidade pública para a conclusão desse desafio.
 
 ## Funcionalidades
 
@@ -11,6 +11,9 @@ Colocar um h2 com detalhes da implementação: Colocar o modelo de arquitetura s
 Optei por documentar o uso de cada uma das funcionalidades criadas através do BDD com sintaxe Gherkin. Dessa forma, detalho o uso de cada endpoint e seus respectivos cenários, validando a entrega da funcionalidade.
 
 ### Criar nova role
+
+<details>
+    <summary>Mais detalhes</summary>
 
 **Contexto**
 
@@ -86,8 +89,12 @@ E informo como código uma das roles pre-definidas (ex: dev)\
 ENTÃO recebo o retorno HTTP CONFLICT:409\
 E no payload de resposta uma mensagem informando que já existe uma role com esse código
 
+</details>
+
 ### Criar memberships
 
+<details>
+    <summary>Mais detalhes</summary>
 **Contexto**
 
 Outro requisito foi a criação do endpoint de cadastro de memberships. Esse endpoint realiza a atribuição de uma role para um usuário de um time. Na requisição deve ser informado o código da role, o id do time e o id do usuário.
@@ -197,7 +204,12 @@ QUANDO realizado uma requisição para atribuir uma role informando todos os dad
 ENTÃO recebo o retorno HTTP CREATED:201\
 E no payload de resposta os dados cadastrados
 
+</details>
+
 ### Consultar memberships
+
+<details>
+    <summary>Mais detalhes</summary>
 
 **Contexto**
 
@@ -205,6 +217,8 @@ Foi solicitado a criação de um endpoint para consultar as memberships cadastra
 **Notas técnicas**
 
 **Cenários**
+
+</details>
 
 ## Documentação
 
@@ -231,6 +245,14 @@ Para documentar o modelo de dados proposto, criei um sql que julgo representar a
 Esse arquivo SQL pode ser encontrado na pasta [/docs/db.sql](./docs/db.sql).
 
 Utilizando este arquivo SQL, seguindo o mesmo padrão de diagrama como código, gerei um diagrama modelo de entidades-relacionameto, que pode ser encontrado na pasta [/docs/dbdocs.io](./docs/dbdocs.io). Para visualizar o diagrama gerado, basta copiar o código deste arquivo e colar no site https://dbdiagram.io/d.
+
+## Detalhes da Implementação
+
+Para a implementação eu optei por seguir o modelo de Arquitetura Limpa, isolando as regras de negócio dos detalhes de infraestrutura e de frameworks, na camada de UseCases e Domain.
+
+Na camada de repositórios, como o desafio é relativamente curto, eu optei por não utilizar um banco de dados, e sim um sistema de arquivos, gerados e carregados assim que a aplicação inicia. Todas as entidades do tipo `Roles` são salvas no arquivo `database/roles.json` e as entidades tipo `Membership` são salvas no arquivo `database/memberships.json`. Toda nova persitência realizada pelas classes `Repository` são persistidos também nos arquivos `.json`.
+
+Sobre os testes, eu utilizei uma abordagem mista de testes unitários e de integração. Realizei os testes unitários apenas na camada de UseCases, que é a camada mais crítica da aplicação, onde estão concentradas as regras de negócio. Todas as outras camadas são cobertas pelos testes de integração.
 
 ## Instalação
 
