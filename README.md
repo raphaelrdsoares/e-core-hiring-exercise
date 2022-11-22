@@ -6,7 +6,89 @@ Todo o código desta API foi armazendo no meu repositório do Github https://git
 
 ## Funcionalidades
 
-Colocar aqui os endpoint e os critérios de aceite.
+Colocar um h2 com detalhes da implementação: Colocar o modelo de arquitetura seguido, Colocar que o banco de dados foi feito na forma de arquivos.
+
+Optei por documentar o uso de cada uma das funcionalidades criadas através do BDD com sintaxe Gherkin. Dessa forma, detalho o uso de cada endpoint e seus respectivos cenários, validando a entrega da funcionalidade.
+
+### Criar nova role
+
+**Contexto**
+
+Foi solicitado a criação de um endpoint para cadastro de Roles. Esse endpoint recebe um código e um nome da role e uma flag informando se é uma role default. O código da é uma chave única, ou seja, não pode haver 2 roles com o mesmo código.
+
+O endoint não realiza atualização, apenas cadastro. Caso seja realizada uma requisição uma role com um código já existente, será retornado um erro.
+
+Só pode existir uma única role default. Caso, durante o cadastro de uma nova role, seja informado que ela é uma role default, então a antiga role default é atualizada para constar como não-default.
+
+**Notas técnicas**
+
+Endpoint para cadastro de novas roles:
+
+```JSON
+// POST /api/roles
+
+{
+  "code": "ux", // código da role. Campo obrigatório
+  "name": "User Experience", // nome da role.  Campo obrigatório
+  "isDefault": false // informa se é role é ou não padrão.  Campo opcional. Valor default: false.
+}
+
+```
+
+**Critérios de aceite**
+
+Cenário A1: Criação de uma role não default com sucesso
+DADO QUE a aplicação está iniciada
+E não cadastrei nenhuma role previamente
+QUANDO envio uma requisição passando um código e um nome qualquer
+E informo que não é uma role default
+ENTÃO recebo o retorno HTTP CREATED:201
+E no payload de resposta os dados cadastrados
+
+Cenário A2: Criação de uma role não default com sucesso
+DADO QUE a aplicação está iniciada
+E não cadastrei nenhuma role previamente
+QUANDO envio uma requisição passando um código e um nome qualquer
+E não informo o campo 'default' no payload
+ENTÃO recebo o retorno HTTP CREATED:201
+E no payload de resposta os dados cadastrados
+E no payload vejo que a role foi cadastrada como não default
+
+Cenário B: Criação de uma role default com sucesso
+DADO QUE a aplicação está iniciada
+E não cadastrei nenhuma role previamente
+QUANDO envio uma requisição passando um código e um nome qualquer
+E informo que não é uma role default
+ENTÃO recebo o retorno HTTP CREATED:201
+E no payload de resposta os dados cadastrados
+
+Cenário C: Substituir uma role default com sucesso
+DADO QUE a aplicação está iniciada
+E já cadastrei uma role default previamente
+QUANDO envio uma requisição passando um código e um nome qualquer
+E informo que é uma role default
+ENTÃO recebo o retorno HTTP CREATED:201
+E no payload de resposta os dados cadastrados
+
+Cenário D: Erro ao criar uma role sem informar os campos obrigatórios
+DADO QUE a aplicação está iniciada
+E não cadastrei nenhuma role previamente
+QUANDO envio uma requisição para criar um role
+E não informo o código ou o nome da role
+ENTÃO recebo o retorno HTTP BAD_REQUEST:400
+E no payload de resposta uma mensagem informando que não é possível cadastrar uma role sem informar os campos obrigatórios
+
+Cenário E: Erro ao criar uma role que já existe
+DADO QUE a aplicação está iniciada
+E não cadastrei nenhuma role previamente
+QUANDO envio uma requisição para criar um role
+E informo como código uma das roles pre-definidas (ex: dev)
+ENTÃO recebo o retorno HTTP CONFLICT:409
+E no payload de resposta uma mensagem informando que já existe uma role com esse código
+
+### Criar memberships
+
+### Consultar memberships
 
 ## Documentação
 
@@ -28,7 +110,7 @@ Também optei por deixar registrado as requisições no formato json para ser im
 
 ### Diagrama ER
 
-Para documentar o modelo de dados proposto, criei um sql que julgo representar as tabelas utilizadas nos micro-serviços `Teams` e `Users`, bem como o modelo de entidades que utilizei para montar o micro-serivço `Roles`.
+Para documentar o modelo de dados proposto, criei um sql que julgo representar as tabelas utilizadas nos micro-serviços `Teams` e `Users`, bem como o modelo de entidades que utilizei para montar este micro-serivço `Roles`.
 
 Esse arquivo SQL pode ser encontrado na pasta [/docs/db.sql](./docs/db.sql).
 
@@ -40,8 +122,6 @@ Utilizando este arquivo SQL, seguindo o mesmo padrão de diagrama como código, 
 
 ## Uso
 
-## Contribuição
-
 ## Possíveis melhorias
 
 1. Achei muito simplórios dados retornados dos endpoint `teams` e `users`.
@@ -52,4 +132,6 @@ Utilizando este arquivo SQL, seguindo o mesmo padrão de diagrama como código, 
 2. No endpoint teams o que eu faria
     1. Dentro de cada time Incluiria uma lista -->
 3. Ambos os endpoint estão retornando todos os dados sem paginação. Incluiria a paginação de forma opcional nos endpoint
-4. A busca do time pelo Id está retornando nulo com HTTP:200. Alteraria para retornar 204:NO_CONTENT
+ <!-- 4. A busca do time pelo Id está retornando nulo com HTTP:200. Alteraria para retornar 204:NO_CONTENT -->
+
+4. Implementaria uma estratégia de logs, registrando logs tratar cada exceção, bem como ao receber novas requisições e ao registrar dados no banco.
