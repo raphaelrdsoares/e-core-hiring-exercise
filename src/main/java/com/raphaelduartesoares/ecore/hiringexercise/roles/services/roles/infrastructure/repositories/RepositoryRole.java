@@ -5,7 +5,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.OptionalInt;
 import java.util.UUID;
+import java.util.stream.IntStream;
 
 import javax.annotation.PostConstruct;
 
@@ -27,7 +29,11 @@ public class RepositoryRole extends RepositoryBase<EntityRole> implements IRepos
 
     @Override
     public EntityRole save(EntityRole entity) throws RepositoryException {
-        insertEntity(entity);
+        if (entity.id == null) {
+            insertEntity(entity);
+        } else {
+            updateEntity(entity);
+        }
         persistEntitiesInFile();
         return entity;
     }
@@ -60,6 +66,21 @@ public class RepositoryRole extends RepositoryBase<EntityRole> implements IRepos
         entity.createdAt = Timestamp.valueOf(LocalDateTime.now());
         entity.updatedAt = Timestamp.valueOf(LocalDateTime.now());
         entities.add(entity);
+    }
+
+    private void updateEntity(EntityRole entity) throws RepositoryException {
+        OptionalInt existingRoleIndex = IntStream
+                .range(0, entities.size())
+                .filter(i -> entity.id.equals(entities.get(i).id))
+                .findFirst();
+
+        if (existingRoleIndex.isEmpty()) {
+            throw new RepositoryException("Error updating entity", "entity id not found");
+        }
+        entity.createdAt = entities.get(existingRoleIndex.getAsInt()).createdAt;
+        entity.updatedAt = Timestamp.valueOf(LocalDateTime.now());
+        int index = existingRoleIndex.getAsInt();
+        entities.set(index, entity);
     }
 
     @PostConstruct
