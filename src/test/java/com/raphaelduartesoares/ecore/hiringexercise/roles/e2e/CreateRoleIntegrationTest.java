@@ -66,6 +66,28 @@ public class CreateRoleIntegrationTest {
                 .exchange()
                 .expectStatus()
                 .isCreated();
+        webClient.post().uri(PATH_ROLES)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{\"code\": \"pm\",\"name\": \"Project Manager\"}")
+                .exchange()
+                .expectStatus()
+                .isCreated();
+    }
+
+    @Test
+    void shouldReplaceDefaultRoleSuccessfully() {
+        webClient.post().uri(PATH_ROLES)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{\"code\": \"sm\",\"name\": \"Scrum Master\",\"isDefault\":true}")
+                .exchange()
+                .expectStatus()
+                .isCreated();
+        webClient.post().uri(PATH_ROLES)
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue("{\"code\": \"pm\",\"name\": \"Project Manager\",\"isDefault\":true}")
+                .exchange()
+                .expectStatus()
+                .isCreated();
     }
 
     @ParameterizedTest
