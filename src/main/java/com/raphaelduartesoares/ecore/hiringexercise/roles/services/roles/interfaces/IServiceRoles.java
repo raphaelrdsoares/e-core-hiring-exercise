@@ -16,7 +16,7 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.Repo
 public interface IServiceRoles {
     public ResponseRoleDto createRole(RequestRoleDto requestRole) throws DuplicatedEntityException, RepositoryException;
 
-    public void assignRole(RequestAssignRoleDto requestAssignRole)
+    public ResponseMembershipDto assignRole(RequestAssignRoleDto requestAssignRole)
             throws NotFoundException, InternalOperationNotAllowedException, RepositoryException;
 
     public List<ResponseMembershipDto> lookUpMembership(RequestLookUpMembershipDto requestLookUpMembership)

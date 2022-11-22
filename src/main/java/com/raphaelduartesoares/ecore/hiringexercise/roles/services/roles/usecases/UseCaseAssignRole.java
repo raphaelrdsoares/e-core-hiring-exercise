@@ -3,6 +3,7 @@ package com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.usecas
 import java.util.Optional;
 
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestAssignRoleDto;
+import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.ResponseMembershipDto;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.Role;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.Membership;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.domain.Team;
@@ -27,7 +28,7 @@ public class UseCaseAssignRole {
         this.microserviceTeams = microserviceTeams;
     }
 
-    public void assignRole(RequestAssignRoleDto requestDto)
+    public ResponseMembershipDto assignRole(RequestAssignRoleDto requestDto)
             throws NotFoundException, InternalOperationNotAllowedException, RepositoryException {
         Membership membership = Membership.fromDto(requestDto);
 
@@ -39,7 +40,8 @@ public class UseCaseAssignRole {
 
         checkIfTeamExistsAndUserExistsInTeam(membership);
 
-        saveMembership(membership);
+        Membership createdMembership = Membership.fromEntity(Optional.of(saveMembership(membership))).get();
+        return createdMembership.toDto();
     }
 
     private void assignDefaultRoleToMembership(Membership membership)
@@ -82,7 +84,7 @@ public class UseCaseAssignRole {
         }
     }
 
-    private void saveMembership(Membership membership)
+    private EntityMembership saveMembership(Membership membership)
             throws RepositoryException, InternalOperationNotAllowedException {
         Optional<Membership> existingMembership = Membership.fromEntity(repositoryMembership.findByTeamAndUser(
                 membership.getTeamId(), membership.getUserId()));
@@ -91,7 +93,7 @@ public class UseCaseAssignRole {
             membership = existingMembership.get();
         }
         EntityMembership entity = membership.toEntity();
-        repositoryMembership.save(entity);
+        return repositoryMembership.save(entity);
     }
 
 }

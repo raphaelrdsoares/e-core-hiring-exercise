@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.RequestAssignRoleDto;
@@ -58,11 +57,11 @@ public class RolesController {
     @ApiResponse(responseCode = "201", description = "Membership created.")
     @ApiResponse(responseCode = "400", description = "The request does not attend the specification.", content = @Content(schema = @Schema(implementation = ApiError.class)))
     @ApiResponse(responseCode = "404", description = "Entity not found.", content = @Content(schema = @Schema(implementation = ApiError.class)))
-    @ResponseStatus(code = HttpStatus.CREATED)
     @PostMapping(path = "/memberships", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void assignRole(@Valid @RequestBody RequestAssignRoleDto requestAssignRole) throws Exception {
-        serviceRoles.assignRole(requestAssignRole);
-        // TODO - retornar a membership criada
+    public ResponseEntity<ResponseMembershipDto> assignRole(@Valid @RequestBody RequestAssignRoleDto requestAssignRole)
+            throws Exception {
+        ResponseMembershipDto response = serviceRoles.assignRole(requestAssignRole);
+        return new ResponseEntity<ResponseMembershipDto>(response, HttpStatus.CREATED);
     }
 
     @Operation(summary = "Look up for memberships.", description = "Return a list of memberships given a role code and/or team id and/or user id.")

@@ -39,9 +39,10 @@ public class ServiceRoles implements IServiceRoles {
     }
 
     @Override
-    public void assignRole(RequestAssignRoleDto requestAssignRole)
+    public ResponseMembershipDto assignRole(RequestAssignRoleDto requestAssignRole)
             throws NotFoundException, InternalOperationNotAllowedException, RepositoryException {
-        new UseCaseAssignRole(repositoryRoles, repositoryMembership, microserviceTeams).assignRole(requestAssignRole);
+        return new UseCaseAssignRole(repositoryRoles, repositoryMembership, microserviceTeams)
+                .assignRole(requestAssignRole);
     }
 
     @Override
