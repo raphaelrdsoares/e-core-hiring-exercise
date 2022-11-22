@@ -4,14 +4,10 @@ import javax.validation.constraints.NotBlank;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString
-@EqualsAndHashCode
 public class RequestAssignRoleDto {
     @Schema(example = "dev")
     public String roleCode;

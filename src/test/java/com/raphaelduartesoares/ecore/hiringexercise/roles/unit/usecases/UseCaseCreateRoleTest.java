@@ -56,7 +56,7 @@ public class UseCaseCreateRoleTest {
     public void shouldCreateRoleSuccessfullyIfDoesNotExists() throws Exception {
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.build());
         
-        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName));
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName, false));
         
         verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleName, false));
         
@@ -73,7 +73,7 @@ public class UseCaseCreateRoleTest {
                 new Executable() {
                     @Override
                     public void execute() throws Exception {
-                        useCase.createRole(new RequestRoleDto(roleCode, roleName));
+                        useCase.createRole(new RequestRoleDto(roleCode, roleName, false));
 
                     }
                 });
@@ -129,7 +129,7 @@ public class UseCaseCreateRoleTest {
         when(repositoryRoles.findByCode(roleCode)).thenReturn(Optional.empty());
         when(repositoryRoles.save(Mockito.any(EntityRole.class))).thenReturn(mockEntityBuilder.build());
 
-        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName));
+        ResponseRoleDto response = useCase.createRole(new RequestRoleDto(roleCode, roleName, false));
 
         verify(repositoryRoles, times(0)).findDefault();
         verify(repositoryRoles, times(1)).save(new EntityRole(roleCode, roleName, isDefault));

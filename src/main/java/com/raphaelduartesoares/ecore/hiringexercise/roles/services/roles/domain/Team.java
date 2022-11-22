@@ -6,14 +6,10 @@ import java.util.Optional;
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.integrations.microservices.teams.dtos.ResponseTeamDto;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 @Builder
-@EqualsAndHashCode
 public class Team {
 
     private String id;

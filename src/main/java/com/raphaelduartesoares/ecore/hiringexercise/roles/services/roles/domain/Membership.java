@@ -11,14 +11,10 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrast
 import com.raphaelduartesoares.ecore.hiringexercise.roles.shared.exceptions.InternalOperationNotAllowedException;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 @Builder
-@EqualsAndHashCode
 public class Membership {
 
     private String id;

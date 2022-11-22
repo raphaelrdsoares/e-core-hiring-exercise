@@ -101,7 +101,7 @@ public class AssignRoleIntegrationTest {
 
     @Test
     void shouldAssignRoleSuccessfully() throws RepositoryException {
-        String requestBody = "{\"roleCode\": \"dev\",\"teamId\":\"5071b4fc-43f2-47a2-8403-e934dc270606\",\"userId\":\"8c35f835-3d03-4f30-9233-67cf1f9b2662\"}";
+        String requestBody = "{\"roleCode\": \"qa\",\"teamId\":\"89a50743-f60b-4345-a772-9d3c68021408\",\"userId\":\"b5d96753-823c-4810-a545-5b5a686ad13e\"}";
         webClient.post().uri(PATH_MEMBERSHIP)
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(requestBody)

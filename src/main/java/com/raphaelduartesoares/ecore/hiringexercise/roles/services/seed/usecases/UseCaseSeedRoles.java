@@ -20,14 +20,14 @@ public class UseCaseSeedRoles {
 
     private void seedTesterRole() {
         try {
-            serviceRoles.createRole(new RequestRoleDto("po", "Product Owner"));
+            serviceRoles.createRole(new RequestRoleDto("po", "Product Owner", false));
         } catch (DuplicatedEntityException | RepositoryException e) {
         }
     }
 
     private void seedProductOwnerRole() {
         try {
-            serviceRoles.createRole(new RequestRoleDto("qa", "Tester"));
+            serviceRoles.createRole(new RequestRoleDto("qa", "Tester", false));
         } catch (DuplicatedEntityException | RepositoryException e) {
         }
     }

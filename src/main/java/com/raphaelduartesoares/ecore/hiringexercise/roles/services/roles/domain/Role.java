@@ -8,14 +8,10 @@ import com.raphaelduartesoares.ecore.hiringexercise.roles.api.rest.roles.dtos.Re
 import com.raphaelduartesoares.ecore.hiringexercise.roles.services.roles.infrastructure.repositories.entities.EntityRole;
 
 import lombok.Builder;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.ToString;
 
 @Getter
-@ToString
 @Builder
-@EqualsAndHashCode
 public class Role {
 
     private String id;
