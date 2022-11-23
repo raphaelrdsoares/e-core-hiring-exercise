@@ -299,7 +299,7 @@ Quanto a questão de documentação, escolhi realizar as seguintes abordagens:
 
 ### Documento de arquitetura
 
-Seguindo a boa prática recomendada pela Thoughtworks no TechRadar de utilizar diagramas como código ([diagram as code](https://www.thoughtworks.com/radar/techniques/diagrams-as-code)), elaborei um diagrama de arquitetura como código seguindo o padrão [modelo C4](<[https://](https://c4model.com/)>).
+Seguindo a boa prática recomendada pela Thoughtworks no TechRadar de utilizar diagramas como código ( [diagram as code](https://www.thoughtworks.com/radar/techniques/diagrams-as-code) ), elaborei um diagrama de arquitetura como código seguindo o padrão [modelo C4](https://c4model.com/).
 
 Este diagrama pode ser encontrado na pasta [/docs/c4-architecture-diagram.dsl](./docs/c4-architecture-diagram.dsl). Para visualizar o diagrama, basta copiar o código deste arquivo, colar campo de texto do site https://structurizr.com/dsl, e clicar em "Render".
 
@@ -307,7 +307,7 @@ Este diagrama pode ser encontrado na pasta [/docs/c4-architecture-diagram.dsl](.
 
 Para documentar os endpoints criados, escolhi utilizar o swagger, fazendo uso a biblioteca `springdoc-openapi-ui` para gerar documentações automáticas.
 
-Ao executar a aplicação, basta acessar a URL [/api/docs/swagger](<[https://](http://localhost:9000/api/docs/swagger)>) para visualizar a documentação dos endpoints utilizando o padrão visual do swagger, ou acessar a URL [/api/docs](http://localhost:9000/api/docs/) para obter a documentação no formato JSON.
+Ao executar a aplicação, basta acessar a URL [/api/docs/swagger](http://localhost:9000/api/docs/swagger) para visualizar a documentação dos endpoints utilizando o padrão visual do swagger, ou acessar a URL [/api/docs](http://localhost:9000/api/docs/) para obter a documentação no formato JSON.
 
 Também optei por deixar registrado as requisições no formato json para ser importados via Postman. Esse arquivo pode ser encontrado na pasta [/docs/e-Core hiring exercise.postman_collection.json](./docs/e-Core%20hiring%20exercise.postman_collection.json).
 
