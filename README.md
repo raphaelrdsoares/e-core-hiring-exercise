@@ -93,6 +93,7 @@ E no payload de resposta uma mensagem informando que já existe uma role com ess
 
 <details>
     <summary>Mais detalhes</summary>
+    
 **Contexto**
 
 Outro requisito foi a criação do endpoint de cadastro de memberships. Esse endpoint realiza a atribuição de uma role para um usuário de um time. Na requisição deve ser informado o código da role, o id do time e o id do usuário.
