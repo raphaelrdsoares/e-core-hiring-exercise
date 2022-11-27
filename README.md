@@ -365,3 +365,4 @@ No micro-serviço `roles`:
 
 1. Implementaria uma estratégia de logs, registrando logs a cada exceção lançada, bem como ao receber novas requisições e ao registrar dados no banco.
 2. Caso fosse utilizar como uma aplicação real, integraria com um banco de dados e com um sistema de monitoramento.
+3. Mensagens de validação/exceção poderiam ficar num único arquivo `messages.properties`;
